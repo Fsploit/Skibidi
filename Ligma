@@ -966,7 +966,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     UICorner.Parent = Example
 
     UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    UIStroke.Color = Color3.fromRGB(60, 60, 80) -- Matches button outline
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)-- Matches button outline
     UIStroke.Thickness = 4
     UIStroke.Parent = Example
 
@@ -994,7 +994,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     -- Slider Track
     SliderTrack.Name = "SliderTrack"
     SliderTrack.Parent = SliderFrame
-    SliderTrack.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+    SliderTrack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     SliderTrack.Position = UDim2.new(0, 0, 0.4, 0)
     SliderTrack.Size = UDim2.new(1, 0, 0.2, 0)
     SliderTrack.ZIndex = 10
