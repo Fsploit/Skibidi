@@ -499,12 +499,14 @@ function nurysium: create_section(name: string, imageID: number)
     tween_service:Create(ImageLabel, TweenInfo.new(3, Enum.EasingStyle.Exponential), {ImageTransparency = 0.45}):Play()
 end
 
-function nurysium: create_toggle(name: string, section_name: string, callback)
+function nurysium:create_toggle(name: string, section_name: string, callback)
     task.wait(0.15)
 
+    -- Set the callback to an empty function if not provided
     callback = callback or function() end
     local toggled = false
 
+    -- Create all necessary UI elements (frames, buttons, etc.)
     local Example = Instance.new("Frame")
     local UICorner = Instance.new("UICorner")
     local UIStroke = Instance.new("UIStroke")
@@ -518,6 +520,7 @@ function nurysium: create_toggle(name: string, section_name: string, callback)
     local UIStroke_2 = Instance.new("UIStroke")
     local UICorner_3 = Instance.new("UICorner")
 
+    -- Setup UI properties
     Example.Name = name
     Example.Parent = ui.Background["functions_frame"]
     Example.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -564,7 +567,7 @@ function nurysium: create_toggle(name: string, section_name: string, callback)
     Title.Position = UDim2.new(0.0449240729, 0, 0.275129884, 0)
     Title.Size = UDim2.new(0, 140, 0, 20)
     Title.ZIndex = 10
-    Title.Font = Enum.Font.GothamBold --// game:GetObjects('rbxassetid://11702779517')[1]
+    Title.Font = Enum.Font.GothamBold
     Title.Text = name
     Title.TextColor3 = Color3.fromRGB(231, 231, 243)
     Title.TextScaled = true
@@ -601,98 +604,64 @@ function nurysium: create_toggle(name: string, section_name: string, callback)
     UICorner_3.CornerRadius = UDim.new(0, 10)
     UICorner_3.Parent = Toggle
 
+    -- Toggle visibility based on the current section
     game:GetService("RunService").Heartbeat:Connect(function()
-        if not section_name:match(ui_data.current_section) and not table.find(search_table, name)then
+        if not section_name:match(ui_data.current_section) and not table.find(search_table, name) then
             Example.Visible = false
         else
             Example.Visible = true
         end
     end)
 
+    -- Function to update the toggle's appearance when toggled
+    local function update_toggle()
+        if toggled then
+            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Position = UDim2.new(0.600, 0, 0.224, 0),
+                BackgroundColor3 = Color3.fromRGB(124, 120, 218)
+            }):Play()
+
+            tween_service:Create(UIStroke_2, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Transparency = 0.5,
+                Color = Color3.fromRGB(59, 58, 151)
+            }):Play()
+
+            tween_service:Create(Toggle, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                BackgroundColor3 = Color3.fromRGB(62, 61, 174)
+            }):Play()
+        else
+            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Position = UDim2.new(0.149, 0, 0.224, 0)
+            }):Play()
+
+            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+            }):Play()
+
+            tween_service:Create(UIStroke_2, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Transparency = 0,
+                Color = Color3.fromRGB(40, 39, 45)
+            }):Play()
+
+            tween_service:Create(Toggle, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                BackgroundColor3 = Color3.fromRGB(27, 24, 35)
+            }):Play()
+        end
+    end
+
+    -- Update the toggle state when clicked
     Hitbox.MouseButton1Up:Connect(function()
         toggled = not toggled
-
         callback(toggled)
-
-        if toggled then
-
-            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                Position = UDim2.new(0.600, 0, 0.224, 0),
-                BackgroundColor3 = Color3.fromRGB(124, 120, 218)
-            }):Play()
-
-            tween_service:Create(UIStroke_2, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                Transparency = 0.5,
-                Color = Color3.fromRGB(59, 58, 151)
-            }):Play()
-
-            tween_service:Create(Toggle, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                BackgroundColor3 = Color3.fromRGB(62, 61, 174)
-            }):Play()
-
-        else
-
-            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                Position = UDim2.new(0.149, 0, 0.224, 0)
-            }):Play()
-
-            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-            }):Play()
-
-            tween_service:Create(UIStroke_2, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                Transparency = 0,
-                Color = Color3.fromRGB(40, 39, 45)
-            }):Play()
-
-            tween_service:Create(Toggle, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                BackgroundColor3 = Color3.fromRGB(27, 24, 35)
-            }):Play()
-        end
+        update_toggle()
     end)
 
+    -- Same for touch tap (in case for mobile devices)
     Hitbox.TouchTap:Connect(function()
         toggled = not toggled
-
         callback(toggled)
-
-        if toggled then
-
-            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                Position = UDim2.new(0.600, 0, 0.224, 0),
-                BackgroundColor3 = Color3.fromRGB(124, 120, 218)
-            }):Play()
-
-            tween_service:Create(UIStroke_2, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                Transparency = 0.5,
-                Color = Color3.fromRGB(59, 58, 151)
-            }):Play()
-
-            tween_service:Create(Toggle, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                BackgroundColor3 = Color3.fromRGB(62, 61, 174)
-            }):Play()
-
-        else
-
-            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                Position = UDim2.new(0.149, 0, 0.224, 0)
-            }):Play()
-
-            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-            }):Play()
-
-            tween_service:Create(UIStroke_2, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                Transparency = 0,
-                Color = Color3.fromRGB(40, 39, 45)
-            }):Play()
-
-            tween_service:Create(Toggle, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-                BackgroundColor3 = Color3.fromRGB(27, 24, 35)
-            }):Play()
-        end
+        update_toggle()
     end)
-
 end
 
-return nurysium
+return nurysium 
