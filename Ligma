@@ -935,5 +935,120 @@ function nurysium:create_dropdown(name, section_name, options, callback)
     end)
 end
 
+function nurysium:create_slider(name, section_name, min, max, callback)
+    task.wait(0.15)
+
+    callback = callback or function(value) end
+    min, max = min or 0, max or 100
+
+    local value = min
+
+    -- Main Frame
+    local Example = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStroke = Instance.new("UIStroke")
+    local Title = Instance.new("TextLabel")
+    local SliderFrame = Instance.new("Frame")
+    local SliderTrack = Instance.new("Frame")
+    local SliderKnob = Instance.new("Frame")
+    local KnobCorner = Instance.new("UICorner")
+    local ValueLabel = Instance.new("TextLabel")
+
+    Example.Name = name
+    Example.Parent = ui.Background["functions_frame"]
+    Example.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Example.BorderSizePixel = 0
+    Example.Position = UDim2.new(0.042, 0, 0.015, 0)
+    Example.Size = UDim2.new(0, 380, 0, 40)
+    Example.ZIndex = 10
+
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = Example
+
+    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Thickness = 4
+    UIStroke.Parent = Example
+
+    -- Title
+    Title.Name = "Title"
+    Title.Parent = Example
+    Title.BackgroundTransparency = 1.000
+    Title.Position = UDim2.new(0.044, 0, 0.1, 0)
+    Title.Size = UDim2.new(0.3, 0, 0.8, 0)
+    Title.ZIndex = 10
+    Title.Font = Enum.Font.GothamBold
+    Title.Text = name
+    Title.TextColor3 = Color3.fromRGB(231, 231, 243)
+    Title.TextScaled = true
+    Title.TextWrapped = true
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Slider Frame
+    SliderFrame.Name = "SliderFrame"
+    SliderFrame.Parent = Example
+    SliderFrame.BackgroundTransparency = 1.000
+    SliderFrame.Position = UDim2.new(0.4, 0, 0.2, 0)
+    SliderFrame.Size = UDim2.new(0.55, 0, 0.6, 0)
+
+    -- Slider Track
+    SliderTrack.Name = "SliderTrack"
+    SliderTrack.Parent = SliderFrame
+    SliderTrack.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+    SliderTrack.Position = UDim2.new(0, 0, 0.4, 0)
+    SliderTrack.Size = UDim2.new(1, 0, 0.2, 0)
+    SliderTrack.ZIndex = 10
+
+    -- Slider Knob
+    SliderKnob.Name = "SliderKnob"
+    SliderKnob.Parent = SliderTrack
+    SliderKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SliderKnob.Position = UDim2.new(0, 0, -0.75, 0)
+    SliderKnob.Size = UDim2.new(0, 15, 2, 0)
+    SliderKnob.ZIndex = 15
+
+    KnobCorner.CornerRadius = UDim.new(1, 0)
+    KnobCorner.Parent = SliderKnob
+
+    -- Value Label
+    ValueLabel.Name = "ValueLabel"
+    ValueLabel.Parent = SliderKnob
+    ValueLabel.BackgroundTransparency = 1.000
+    ValueLabel.Position = UDim2.new(0, 0, -1.5, 0)
+    ValueLabel.Size = UDim2.new(1, 0, 0.5, 0)
+    ValueLabel.ZIndex = 20
+    ValueLabel.Font = Enum.Font.Gotham
+    ValueLabel.Text = tostring(min)
+    ValueLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ValueLabel.TextScaled = true
+    ValueLabel.TextWrapped = true
+
+    -- Dragging Logic
+    local userInputService = game:GetService("UserInputService")
+    local dragging = false
+
+    SliderKnob.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+        end
+    end)
+
+    SliderKnob.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+
+    userInputService.InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            local scale = math.clamp((input.Position.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
+            value = math.floor(min + (max - min) * scale)
+            SliderKnob.Position = UDim2.new(scale, 0, -0.75, 0)
+            ValueLabel.Text = tostring(value)
+            callback(value)
+        end
+    end)
+end
+
 
 return nurysium
