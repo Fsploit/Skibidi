@@ -935,6 +935,7 @@ function nurysium:create_dropdown(name, section_name, options, callback)
     end)
 end
 
+
 function nurysium:create_slider(name, section_name, min, max, callback)
     task.wait(0.15)
 
@@ -952,7 +953,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     local SliderTrack = Instance.new("Frame")
     local SliderKnob = Instance.new("Frame")
     local KnobCorner = Instance.new("UICorner")
-    local ValueLabel = Instance.new("TextLabel")
+    local KnobStroke = Instance.new("UIStroke")
 
     Example.Name = name
     Example.Parent = ui.Background["functions_frame"]
@@ -966,7 +967,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     UICorner.Parent = Example
 
     UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Color = Color3.fromRGB(0, 0, 0) -- Matches button outline
     UIStroke.Thickness = 4
     UIStroke.Parent = Example
 
@@ -1010,18 +1011,10 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     KnobCorner.CornerRadius = UDim.new(1, 0)
     KnobCorner.Parent = SliderKnob
 
-    -- Value Label
-    ValueLabel.Name = "ValueLabel"
-    ValueLabel.Parent = SliderKnob
-    ValueLabel.BackgroundTransparency = 1.000
-    ValueLabel.Position = UDim2.new(0, 0, -1.5, 0)
-    ValueLabel.Size = UDim2.new(1, 0, 0.5, 0)
-    ValueLabel.ZIndex = 20
-    ValueLabel.Font = Enum.Font.Gotham
-    ValueLabel.Text = tostring(min)
-    ValueLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ValueLabel.TextScaled = true
-    ValueLabel.TextWrapped = true
+    KnobStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    KnobStroke.Color = Color3.fromRGB(0, 0, 0)-- Matches button outline
+    KnobStroke.Thickness = 1.8
+    KnobStroke.Parent = SliderKnob
 
     -- Dragging Logic
     local userInputService = game:GetService("UserInputService")
@@ -1040,11 +1033,10 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     end)
 
     userInputService.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
             local scale = math.clamp((input.Position.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
             value = math.floor(min + (max - min) * scale)
             SliderKnob.Position = UDim2.new(scale, 0, -0.75, 0)
-            ValueLabel.Text = tostring(value)
             callback(value)
         end
     end)
