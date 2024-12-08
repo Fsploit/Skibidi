@@ -710,7 +710,7 @@ function nurysium:create_button(name: string, section_name: string, callback)
     Hitbox.BackgroundTransparency = 1.000
     Hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Hitbox.BorderSizePixel = 0
-    Hitbox.Size = UDim2.new(3, 0, 3, 0)
+    Hitbox.Size = UDim2.new(1, 0, 1, 0)
     Hitbox.Font = Enum.Font.SourceSans
     Hitbox.TextColor3 = Color3.fromRGB(0, 0, 0)
     Hitbox.TextSize = 1.000
@@ -788,6 +788,5 @@ function nurysium:create_button(name: string, section_name: string, callback)
         animate_button()
     end)
 end
-
 
 return nurysium 
