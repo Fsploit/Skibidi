@@ -967,7 +967,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     UICorner.Parent = Example
 
     UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    UIStroke.Color = Color3.fromRGB(255, 255, 255) -- Matches other button outlines
+    UIStroke.Color = Color3.fromRGB(39, 36, 47) -- Matches other button outlines
     UIStroke.Thickness = 4
     UIStroke.Parent = Example
 
@@ -1012,7 +1012,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     KnobCorner.Parent = SliderKnob
 
     KnobStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    KnobStroke.Color = Color3.fromRGB(255, 255, 255) -- Matches button outline
+    KnobStroke.Color = Color3.fromRGB(39, 36, 47) -- Matches button outline
     KnobStroke.Thickness = 1.8
     KnobStroke.Parent = SliderKnob
 
