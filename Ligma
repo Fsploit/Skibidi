@@ -833,7 +833,7 @@ function nurysium:create_dropdown(name, section_name, options, callback)
     Title.Name = "Title"
     Title.Parent = Example
     Title.BackgroundTransparency = 1.000
-    Title.Position = UDim2.new(0.0449240729, 0, 0.5, 0)
+    Title.Position = UDim2.new(0.0449240729, 0, 0.275129884, 0)
     Title.Size = UDim2.new(0, 140, 0, 20)
     Title.ZIndex = 10
     Title.Font = Enum.Font.GothamBold
