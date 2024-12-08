@@ -679,8 +679,6 @@ function nurysium:create_button(name: string, section_name: string, callback)
     local UIGradient_2 = Instance.new("UIGradient")
     local Title = Instance.new("TextLabel")
     local Button = Instance.new("Frame")
-    local UICorner_2 = Instance.new("UICorner")
-    local UIStroke_2 = Instance.new("UIStroke")
 
     -- Setup UI properties
     Example.Name = name
@@ -746,14 +744,6 @@ function nurysium:create_button(name: string, section_name: string, callback)
     Button.Size = UDim2.new(0, 38, 0, 18)
     Button.ZIndex = 15
 
-    UICorner_2.CornerRadius = UDim.new(1, 0)
-    UICorner_2.Parent = Button
-
-    UIStroke_2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    UIStroke_2.Color = Color3.fromRGB(40, 39, 45)
-    UIStroke_2.Thickness = 1.7999999523162842
-    UIStroke_2.Parent = Button
-
     -- Button visibility based on section
     game:GetService("RunService").Heartbeat:Connect(function()
         if not section_name:match(ui_data.current_section) and not table.find(search_table, name) then
@@ -763,30 +753,16 @@ function nurysium:create_button(name: string, section_name: string, callback)
         end
     end)
 
-    -- Function to animate button press
-    local function animate_button()
-        tween_service:Create(Button, TweenInfo.new(0.1, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {
-            BackgroundColor3 = Color3.fromRGB(62, 61, 174)
-        }):Play()
-
-        -- Reset the color back after a short delay
-        task.wait(0.1)
-        tween_service:Create(Button, TweenInfo.new(0.1, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {
-            BackgroundColor3 = Color3.fromRGB(27, 24, 35)
-        }):Play()
-    end
-
-    -- Trigger callback and animate on button click
+    -- Trigger callback when the button is clicked
     Hitbox.MouseButton1Up:Connect(function()
         callback()
-        animate_button()
     end)
 
     -- Same for touch tap (for mobile devices)
     Hitbox.TouchTap:Connect(function()
         callback()
-        animate_button()
     end)
 end
+
 
 return nurysium 
