@@ -499,393 +499,200 @@ function nurysium: create_section(name: string, imageID: number)
     tween_service:Create(ImageLabel, TweenInfo.new(3, Enum.EasingStyle.Exponential), {ImageTransparency = 0.45}):Play()
 end
 
-function nurysium:create_text_box(title, content, section_name)
+function nurysium: create_toggle(name: string, section_name: string, callback)
     task.wait(0.15)
 
-    local TextBox = Instance.new("Frame")
+    callback = callback or function() end
+    local toggled = false
+
+    local Example = Instance.new("Frame")
     local UICorner = Instance.new("UICorner")
     local UIStroke = Instance.new("UIStroke")
     local UIGradient = Instance.new("UIGradient")
-    local TitleLabel = Instance.new("TextLabel")
-    local ContentLabel = Instance.new("TextLabel")
+    local Hitbox = Instance.new("TextButton")
+    local UIGradient_2 = Instance.new("UIGradient")
+    local Title = Instance.new("TextLabel")
+    local Toggle = Instance.new("Frame")
+    local Dot = Instance.new("Frame")
+    local UICorner_2 = Instance.new("UICorner")
+    local UIStroke_2 = Instance.new("UIStroke")
+    local UICorner_3 = Instance.new("UICorner")
 
-    TextBox.Name = title
-    TextBox.Parent = ui.Background["functions_frame"]
-    TextBox.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    TextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    TextBox.BorderSizePixel = 0
-    TextBox.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)
-    TextBox.Size = UDim2.new(0, 380, 0, 80)
-    TextBox.ZIndex = 10
+    Example.Name = name
+    Example.Parent = ui.Background["functions_frame"]
+    Example.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Example.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Example.BorderSizePixel = 0
+    Example.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)
+    Example.Size = UDim2.new(0, 380, 0, 43)
+    Example.ZIndex = 10
 
     UICorner.CornerRadius = UDim.new(0, 10)
-    UICorner.Parent = TextBox
+    UICorner.Parent = Example
 
     UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     UIStroke.Color = Color3.fromRGB(255, 255, 255)
     UIStroke.Thickness = 4
-    UIStroke.Parent = TextBox
+    UIStroke.Parent = Example
 
-    UIGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)),
-        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(46, 43, 56))
-    }
+    UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(46, 43, 56))}
     UIGradient.Rotation = 36
     UIGradient.Parent = UIStroke
 
-    TitleLabel.Name = "Title"
-    TitleLabel.Parent = TextBox
-    TitleLabel.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    TitleLabel.BackgroundTransparency = 1.000
-    TitleLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    TitleLabel.BorderSizePixel = 0
-    TitleLabel.Position = UDim2.new(0.0449240729, 0, 0.1, 0)
-    TitleLabel.Size = UDim2.new(0, 340, 0, 20)
-    TitleLabel.ZIndex = 11
-    TitleLabel.Font = Enum.Font.GothamBold
-    TitleLabel.Text = title
-    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
-    TitleLabel.TextScaled = true
-    TitleLabel.TextSize = 14.000
-    TitleLabel.TextWrapped = true
-    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    Hitbox.Name = "Hitbox"
+    Hitbox.Parent = Example
+    Hitbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Hitbox.BackgroundTransparency = 1.000
+    Hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Hitbox.BorderSizePixel = 0
+    Hitbox.Size = UDim2.new(1, 0, 1, 0)
+    Hitbox.Font = Enum.Font.SourceSans
+    Hitbox.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Hitbox.TextSize = 1.000
+    Hitbox.TextTransparency = 1.000
 
-    ContentLabel.Name = "Content"
-    ContentLabel.Parent = TextBox
-    ContentLabel.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    ContentLabel.BackgroundTransparency = 1.000
-    ContentLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ContentLabel.BorderSizePixel = 0
-    ContentLabel.Position = UDim2.new(0.0449240729, 0, 0.4, 0)
-    ContentLabel.Size = UDim2.new(0, 340, 0, 35)
-    ContentLabel.ZIndex = 11
-    ContentLabel.Font = Enum.Font.Gotham
-    ContentLabel.Text = content
-    ContentLabel.TextColor3 = Color3.fromRGB(200, 200, 220)
-    ContentLabel.TextScaled = true
-    ContentLabel.TextSize = 12.000
-    ContentLabel.TextWrapped = true
-    ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
-    ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
+    UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(33, 31, 40))}
+    UIGradient_2.Rotation = -113
+    UIGradient_2.Parent = Example
+
+    Title.Name = "Title"
+    Title.Parent = Example
+    Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Title.BackgroundTransparency = 1.000
+    Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Title.BorderSizePixel = 0
+    Title.Position = UDim2.new(0.0449240729, 0, 0.275129884, 0)
+    Title.Size = UDim2.new(0, 140, 0, 20)
+    Title.ZIndex = 10
+    Title.Font = Enum.Font.GothamBold --// game:GetObjects('rbxassetid://11702779517')[1]
+    Title.Text = name
+    Title.TextColor3 = Color3.fromRGB(231, 231, 243)
+    Title.TextScaled = true
+    Title.TextSize = 14.000
+    Title.TextWrapped = true
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    Toggle.Name = "Toggle"
+    Toggle.Parent = Example
+    Toggle.BackgroundColor3 = Color3.fromRGB(27, 24, 35)
+    Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Toggle.BorderSizePixel = 0
+    Toggle.Position = UDim2.new(0.841389358, 0, 0.279069781, 0)
+    Toggle.Size = UDim2.new(0, 38, 0, 18)
+    Toggle.ZIndex = 15
+
+    Dot.Name = "Dot"
+    Dot.Parent = Toggle
+    Dot.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Dot.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Dot.BorderSizePixel = 0
+    Dot.Position = UDim2.new(0.149068192, 0, 0.22351414, 0)
+    Dot.Size = UDim2.new(0, 10, 0, 10)
+    Dot.ZIndex = 15
+
+    UICorner_2.CornerRadius = UDim.new(1, 0)
+    UICorner_2.Parent = Dot
+
+    UIStroke_2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    UIStroke_2.Color = Color3.fromRGB(40, 39, 45)
+    UIStroke_2.Thickness = 1.7999999523162842
+    UIStroke_2.Parent = Toggle
+
+    UICorner_3.CornerRadius = UDim.new(0, 10)
+    UICorner_3.Parent = Toggle
 
     game:GetService("RunService").Heartbeat:Connect(function()
-        if not section_name:match(ui_data.current_section) and not table.find(search_table, title) then
-            TextBox.Visible = false
+        if not section_name:match(ui_data.current_section) and not table.find(search_table, name)then
+            Example.Visible = false
         else
-            TextBox.Visible = true
+            Example.Visible = true
         end
     end)
-end
 
-
--- Base Functionality for UI Components
-function nurysium:create_button(title, callback)
-    callback = callback or function() end
-    local Button = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local UIStroke = Instance.new("UIStroke")
-    local TitleLabel = Instance.new("TextLabel")
-    local Hitbox = Instance.new("TextButton")
-
-    Button.Name = title
-    Button.Parent = ui.Background["functions_frame"]
-    Button.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    Button.Size = UDim2.new(0, 380, 0, 43)
-    Button.ZIndex = 10
-
-    UICorner.CornerRadius = UDim.new(0, 10)
-    UICorner.Parent = Button
-
-    UIStroke.Color = Color3.fromRGB(255, 255, 255)
-    UIStroke.Thickness = 4
-    UIStroke.Parent = Button
-
-    TitleLabel.Parent = Button
-    TitleLabel.BackgroundTransparency = 1.000
-    TitleLabel.Position = UDim2.new(0.05, 0, 0.25, 0)
-    TitleLabel.Size = UDim2.new(0.9, 0, 0.5, 0)
-    TitleLabel.Font = Enum.Font.GothamBold
-    TitleLabel.Text = title
-    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
-    TitleLabel.TextScaled = true
-    TitleLabel.TextWrapped = true
-    TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
-
-    Hitbox.Parent = Button
-    Hitbox.Size = UDim2.new(1, 0, 1, 0)
-    Hitbox.BackgroundTransparency = 1.000
-    Hitbox.Text = ""
-    Hitbox.MouseButton1Click:Connect(function()
-        callback()
-    end)
-end
-
-function nurysium:create_toggle(title, callback)
-    callback = callback or function(state) end
-    local toggled = false
-
-    local Toggle = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local UIStroke = Instance.new("UIStroke")
-    local TitleLabel = Instance.new("TextLabel")
-    local ToggleSwitch = Instance.new("Frame")
-    local ToggleKnob = Instance.new("Frame")
-    local Hitbox = Instance.new("TextButton")
-
-    Toggle.Name = title
-    Toggle.Parent = ui.Background["functions_frame"]
-    Toggle.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    Toggle.Size = UDim2.new(0, 380, 0, 43)
-    Toggle.ZIndex = 10
-
-    UICorner.CornerRadius = UDim.new(0, 10)
-    UICorner.Parent = Toggle
-
-    UIStroke.Color = Color3.fromRGB(255, 255, 255)
-    UIStroke.Thickness = 4
-    UIStroke.Parent = Toggle
-
-    TitleLabel.Parent = Toggle
-    TitleLabel.BackgroundTransparency = 1.000
-    TitleLabel.Position = UDim2.new(0.05, 0, 0.25, 0)
-    TitleLabel.Size = UDim2.new(0.7, 0, 0.5, 0)
-    TitleLabel.Font = Enum.Font.GothamBold
-    TitleLabel.Text = title
-    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
-    TitleLabel.TextScaled = true
-    TitleLabel.TextWrapped = true
-    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-    ToggleSwitch.Parent = Toggle
-    ToggleSwitch.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-    ToggleSwitch.Position = UDim2.new(0.8, 0, 0.25, 0)
-    ToggleSwitch.Size = UDim2.new(0.15, 0, 0.5, 0)
-    ToggleSwitch.ZIndex = 10
-
-    ToggleKnob.Parent = ToggleSwitch
-    ToggleKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ToggleKnob.Position = UDim2.new(0.1, 0, 0.1, 0)
-    ToggleKnob.Size = UDim2.new(0.4, 0, 0.8, 0)
-    ToggleKnob.ZIndex = 11
-
-    Hitbox.Parent = Toggle
-    Hitbox.Size = UDim2.new(1, 0, 1, 0)
-    Hitbox.BackgroundTransparency = 1.000
-    Hitbox.Text = ""
-    Hitbox.MouseButton1Click:Connect(function()
+    Hitbox.MouseButton1Up:Connect(function()
         toggled = not toggled
+
         callback(toggled)
-        ToggleKnob:TweenPosition(
-            toggled and UDim2.new(0.5, 0, 0.1, 0) or UDim2.new(0.1, 0, 0.1, 0),
-            "Out",
-            "Quad",
-            0.2,
-            true
-        )
-    end)
-end
 
-function nurysium:create_slider(title, min, max, default, callback)
-    callback = callback or function(value) end
+        if toggled then
 
-    local Slider = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local UIStroke = Instance.new("UIStroke")
-    local TitleLabel = Instance.new("TextLabel")
-    local SliderBar = Instance.new("Frame")
-    local SliderFill = Instance.new("Frame")
-    local Knob = Instance.new("Frame")
-    local UICornerKnob = Instance.new("UICorner")
-    local Hitbox = Instance.new("TextButton")
+            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Position = UDim2.new(0.600, 0, 0.224, 0),
+                BackgroundColor3 = Color3.fromRGB(124, 120, 218)
+            }):Play()
 
-    -- Main Frame
-    Slider.Name = title
-    Slider.Parent = ui.Background["functions_frame"]
-    Slider.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    Slider.Size = UDim2.new(0, 380, 0, 50)
-    Slider.ZIndex = 10
+            tween_service:Create(UIStroke_2, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Transparency = 0.5,
+                Color = Color3.fromRGB(59, 58, 151)
+            }):Play()
 
-    UICorner.CornerRadius = UDim.new(0, 10)
-    UICorner.Parent = Slider
+            tween_service:Create(Toggle, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                BackgroundColor3 = Color3.fromRGB(62, 61, 174)
+            }):Play()
 
-    UIStroke.Color = Color3.fromRGB(255, 255, 255)
-    UIStroke.Thickness = 4
-    UIStroke.Parent = Slider
-
-    -- Title
-    TitleLabel.Parent = Slider
-    TitleLabel.BackgroundTransparency = 1.000
-    TitleLabel.Position = UDim2.new(0.05, 0, 0.1, 0)
-    TitleLabel.Size = UDim2.new(0.9, 0, 0.3, 0)
-    TitleLabel.Font = Enum.Font.GothamBold
-    TitleLabel.Text = title
-    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
-    TitleLabel.TextScaled = true
-    TitleLabel.TextWrapped = true
-    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-    -- Slider Bar
-    SliderBar.Name = "SliderBar"
-    SliderBar.Parent = Slider
-    SliderBar.BackgroundColor3 = Color3.fromRGB(60, 60, 75)
-    SliderBar.Position = UDim2.new(0.05, 0, 0.6, 0)
-    SliderBar.Size = UDim2.new(0.9, 0, 0.2, 0)
-    SliderBar.ZIndex = 11
-
-    -- Slider Fill
-    SliderFill.Name = "SliderFill"
-    SliderFill.Parent = SliderBar
-    SliderFill.BackgroundColor3 = Color3.fromRGB(62, 61, 174)
-    SliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0) -- Default position
-    SliderFill.ZIndex = 12
-
-    -- Knob
-    Knob.Name = "Knob"
-    Knob.Parent = SliderFill
-    Knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Knob.Position = UDim2.new(1, -5, -0.5, 0)
-    Knob.Size = UDim2.new(0, 20, 0, 20)
-    Knob.ZIndex = 13
-
-    UICornerKnob.CornerRadius = UDim.new(1, 0)
-    UICornerKnob.Parent = Knob
-
-    -- Hitbox
-    Hitbox.Name = "Hitbox"
-    Hitbox.Parent = Slider
-    Hitbox.BackgroundTransparency = 1.000
-    Hitbox.Size = UDim2.new(1, 0, 1, 0)
-    Hitbox.Text = ""
-
-    -- Slider Logic
-    local dragging = false
-    local function updatePosition(input)
-        local sliderBarAbsolute = SliderBar.AbsolutePosition
-        local sliderBarSize = SliderBar.AbsoluteSize.X
-        local inputPos = math.clamp(input.Position.X - sliderBarAbsolute.X, 0, sliderBarSize)
-        local percentage = inputPos / sliderBarSize
-        local value = math.floor(min + (percentage * (max - min)))
-        SliderFill.Size = UDim2.new(percentage, 0, 1, 0)
-        Knob.Position = UDim2.new(percentage, -5, -0.5, 0)
-        callback(value)
-    end
-
-    Hitbox.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-        end
-    end)
-
-    Hitbox.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = false
-        end
-    end)
-
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            updatePosition(input)
-        end
-    end)
-end
-
-function nurysium:create_dropdown(title, options, callback)
-    callback = callback or function(selected) end
-    local expanded = false
-    local Dropdown = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local UIStroke = Instance.new("UIStroke")
-    local TitleLabel = Instance.new("TextLabel")
-    local DropdownArrow = Instance.new("ImageLabel")
-    local OptionsFrame = Instance.new("Frame")
-    local UIListLayout = Instance.new("UIListLayout")
-    local Hitbox = Instance.new("TextButton")
-
-    Dropdown.Name = title
-    Dropdown.Parent = ui.Background["functions_frame"]
-    Dropdown.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    Dropdown.Size = UDim2.new(0, 380, 0, 43)
-    Dropdown.ZIndex = 10
-    Dropdown.ClipsDescendants = true
-
-    UICorner.CornerRadius = UDim.new(0, 10)
-    UICorner.Parent = Dropdown
-
-    UIStroke.Color = Color3.fromRGB(255, 255, 255)
-    UIStroke.Thickness = 4
-    UIStroke.Parent = Dropdown
-
-    TitleLabel.Parent = Dropdown
-    TitleLabel.BackgroundTransparency = 1.000
-    TitleLabel.Position = UDim2.new(0.05, 0, 0.25, 0)
-    TitleLabel.Size = UDim2.new(0.8, 0, 0.5, 0)
-    TitleLabel.Font = Enum.Font.GothamBold
-    TitleLabel.Text = title
-    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
-    TitleLabel.TextScaled = true
-    TitleLabel.TextWrapped = true
-    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-    DropdownArrow.Parent = Dropdown
-    DropdownArrow.BackgroundTransparency = 1.000
-    DropdownArrow.Position = UDim2.new(0.9, 0, 0.25, 0)
-    DropdownArrow.Size = UDim2.new(0.07, 0, 0.5, 0)
-    DropdownArrow.Image = "rbxassetid://6031091004" -- Down arrow icon
-    DropdownArrow.ImageColor3 = Color3.fromRGB(231, 231, 243)
-
-    OptionsFrame.Parent = Dropdown
-    OptionsFrame.BackgroundTransparency = 1.000
-    OptionsFrame.Position = UDim2.new(0, 0, 1, 0)
-    OptionsFrame.Size = UDim2.new(1, 0, 0, 0)
-    OptionsFrame.ZIndex = 11
-    OptionsFrame.Visible = false
-
-    UIListLayout.Parent = OptionsFrame
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
-    for _, option in pairs(options) do
-        local OptionButton = Instance.new("TextButton")
-        local OptionCorner = Instance.new("UICorner")
-
-        OptionButton.Parent = OptionsFrame
-        OptionButton.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-        OptionButton.Size = UDim2.new(1, -10, 0, 35)
-        OptionButton.Font = Enum.Font.Gotham
-        OptionButton.Text = option
-        OptionButton.TextColor3 = Color3.fromRGB(231, 231, 243)
-        OptionButton.TextScaled = true
-        OptionButton.TextWrapped = true
-
-        OptionCorner.CornerRadius = UDim.new(0, 8)
-        OptionCorner.Parent = OptionButton
-
-        OptionButton.MouseButton1Click:Connect(function()
-            callback(option)
-            TitleLabel.Text = option
-            expanded = false
-            DropdownArrow:TweenRotation(0)
-            OptionsFrame.Visible = false
-            Dropdown:TweenSize(UDim2.new(0, 380, 0, 43), "Out", "Quad", 0.25, true)
-        end)
-    end
-
-    Hitbox.Parent = Dropdown
-    Hitbox.Size = UDim2.new(1, 0, 1, 0)
-    Hitbox.BackgroundTransparency = 1.000
-    Hitbox.Text = ""
-
-    Hitbox.MouseButton1Click:Connect(function()
-        expanded = not expanded
-        if expanded then
-            DropdownArrow:TweenRotation(180)
-            OptionsFrame.Visible = true
-            local newHeight = 43 + (#options * 40) -- Adjust height based on number of options
-            Dropdown:TweenSize(UDim2.new(0, 380, 0, newHeight), "Out", "Quad", 0.25, true)
         else
-            DropdownArrow:TweenRotation(0)
-            OptionsFrame.Visible = false
-            Dropdown:TweenSize(UDim2.new(0, 380, 0, 43), "Out", "Quad", 0.25, true)
+
+            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Position = UDim2.new(0.149, 0, 0.224, 0)
+            }):Play()
+
+            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+            }):Play()
+
+            tween_service:Create(UIStroke_2, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Transparency = 0,
+                Color = Color3.fromRGB(40, 39, 45)
+            }):Play()
+
+            tween_service:Create(Toggle, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                BackgroundColor3 = Color3.fromRGB(27, 24, 35)
+            }):Play()
         end
     end)
+
+    Hitbox.TouchTap:Connect(function()
+        toggled = not toggled
+
+        callback(toggled)
+
+        if toggled then
+
+            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Position = UDim2.new(0.600, 0, 0.224, 0),
+                BackgroundColor3 = Color3.fromRGB(124, 120, 218)
+            }):Play()
+
+            tween_service:Create(UIStroke_2, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Transparency = 0.5,
+                Color = Color3.fromRGB(59, 58, 151)
+            }):Play()
+
+            tween_service:Create(Toggle, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                BackgroundColor3 = Color3.fromRGB(62, 61, 174)
+            }):Play()
+
+        else
+
+            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Position = UDim2.new(0.149, 0, 0.224, 0)
+            }):Play()
+
+            tween_service:Create(Dot, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+            }):Play()
+
+            tween_service:Create(UIStroke_2, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                Transparency = 0,
+                Color = Color3.fromRGB(40, 39, 45)
+            }):Play()
+
+            tween_service:Create(Toggle, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+                BackgroundColor3 = Color3.fromRGB(27, 24, 35)
+            }):Play()
+        end
+    end)
+
 end
 
+return nurysium
