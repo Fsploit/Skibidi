@@ -889,5 +889,3 @@ function nurysium:create_dropdown(title, options, callback)
     end)
 end
 
-
-return nurysium
