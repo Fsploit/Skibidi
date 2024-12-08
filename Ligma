@@ -789,5 +789,110 @@ function nurysium:create_slider(title, min, max, default, callback)
     end)
 end
 
+function nurysium:create_dropdown(title, options, callback)
+    callback = callback or function(selected) end
+    local expanded = false
+    local Dropdown = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStroke = Instance.new("UIStroke")
+    local TitleLabel = Instance.new("TextLabel")
+    local DropdownArrow = Instance.new("ImageLabel")
+    local OptionsFrame = Instance.new("Frame")
+    local UIListLayout = Instance.new("UIListLayout")
+    local Hitbox = Instance.new("TextButton")
+
+    Dropdown.Name = title
+    Dropdown.Parent = ui.Background["functions_frame"]
+    Dropdown.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Dropdown.Size = UDim2.new(0, 380, 0, 43)
+    Dropdown.ZIndex = 10
+    Dropdown.ClipsDescendants = true
+
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = Dropdown
+
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Thickness = 4
+    UIStroke.Parent = Dropdown
+
+    TitleLabel.Parent = Dropdown
+    TitleLabel.BackgroundTransparency = 1.000
+    TitleLabel.Position = UDim2.new(0.05, 0, 0.25, 0)
+    TitleLabel.Size = UDim2.new(0.8, 0, 0.5, 0)
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
+    TitleLabel.TextScaled = true
+    TitleLabel.TextWrapped = true
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+    DropdownArrow.Parent = Dropdown
+    DropdownArrow.BackgroundTransparency = 1.000
+    DropdownArrow.Position = UDim2.new(0.9, 0, 0.25, 0)
+    DropdownArrow.Size = UDim2.new(0.07, 0, 0.5, 0)
+    DropdownArrow.Image = "rbxassetid://6031091004" -- Down arrow icon
+    DropdownArrow.ImageColor3 = Color3.fromRGB(231, 231, 243)
+
+    OptionsFrame.Parent = Dropdown
+    OptionsFrame.BackgroundTransparency = 1.000
+    OptionsFrame.Position = UDim2.new(0, 0, 1, 0)
+    OptionsFrame.Size = UDim2.new(1, 0, 0, 0)
+    OptionsFrame.ZIndex = 11
+    OptionsFrame.Visible = false
+
+    UIListLayout.Parent = OptionsFrame
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+    for _, option in pairs(options) do
+        local OptionButton = Instance.new("TextButton")
+        local OptionCorner = Instance.new("UICorner")
+
+        OptionButton.Parent = OptionsFrame
+        OptionButton.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+        OptionButton.Size = UDim2.new(1, -10, 0, 35)
+        OptionButton.Font = Enum.Font.Gotham
+        OptionButton.Text = option
+        OptionButton.TextColor3 = Color3.fromRGB(231, 231, 243)
+        OptionButton.TextScaled = true
+        OptionButton.TextWrapped = true
+
+        OptionCorner.CornerRadius = UDim.new(0, 8)
+        OptionCorner.Parent = OptionButton
+
+        OptionButton.MouseButton1Click:Connect(function()
+            callback(option)
+            TitleLabel.Text = option
+            expanded = false
+            DropdownArrow:TweenRotation(0)
+            OptionsFrame.Visible = false
+            Dropdown:TweenSize(UDim2.new(0, 380, 0, 43), "Out", "Quad", 0.25, true)
+        end)
+    end
+
+    Hitbox.Parent = Dropdown
+    Hitbox.Size = UDim2.new(1, 0, 1, 0)
+    Hitbox.BackgroundTransparency = 1.000
+    Hitbox.Text = ""
+
+    Hitbox.MouseButton1Click:Connect(function()
+        expanded = not expanded
+        if expanded then
+            DropdownArrow:TweenRotation(180)
+            OptionsFrame.Visible = true
+            local newHeight = 43 + (#options * 40) -- Adjust height based on number of options
+            Dropdown:TweenSize(UDim2.new(0, 380, 0, newHeight), "Out", "Quad", 0.25, true)
+        else
+            DropdownArrow:TweenRotation(0)
+            OptionsFrame.Visible = false
+            Dropdown:TweenSize(UDim2.new(0, 380, 0, 43), "Out", "Quad", 0.25, true)
+        end
+    end)
+end
+
+-- Tween Rotation Helper
+function Instance:TweenRotation(degrees)
+    game:GetService("TweenService"):Create(self, TweenInfo.new(0.25), {Rotation = degrees}):Play()
+end
+
 
 return nurysium
