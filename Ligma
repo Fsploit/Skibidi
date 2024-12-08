@@ -951,6 +951,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     local SliderFrame = Instance.new("Frame")
     local SliderTrack = Instance.new("Frame")
     local SliderKnob = Instance.new("Frame")
+    local Hitbox = Instance.new("Frame")
     local KnobCorner = Instance.new("UICorner")
     local KnobStroke = Instance.new("UIStroke")
 
@@ -959,14 +960,14 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     Example.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
     Example.BorderSizePixel = 0
     Example.Position = UDim2.new(0.042, 0, 0.015, 0)
-    Example.Size = UDim2.new(0, 380, 0, 40)
+    Example.Size = UDim2.new(0, 380, 0, 43)
     Example.ZIndex = 10
 
     UICorner.CornerRadius = UDim.new(0, 10)
     UICorner.Parent = Example
 
     UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    UIStroke.Color = Color3.fromRGB(255, 255, 255)-- Matches button outline
+    UIStroke.Color = Color3.fromRGB(255, 255, 255) -- Matches other button outlines
     UIStroke.Thickness = 4
     UIStroke.Parent = Example
 
@@ -994,7 +995,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     -- Slider Track
     SliderTrack.Name = "SliderTrack"
     SliderTrack.Parent = SliderFrame
-    SliderTrack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    SliderTrack.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
     SliderTrack.Position = UDim2.new(0, 0, 0.4, 0)
     SliderTrack.Size = UDim2.new(1, 0, 0.2, 0)
     SliderTrack.ZIndex = 10
@@ -1011,21 +1012,37 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     KnobCorner.Parent = SliderKnob
 
     KnobStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    KnobStroke.Color = Color3.fromRGB(60, 60, 80) -- Matches button outline
+    KnobStroke.Color = Color3.fromRGB(255, 255, 255) -- Matches button outline
     KnobStroke.Thickness = 1.8
     KnobStroke.Parent = SliderKnob
+
+    -- Hitbox for Better Dragging
+    Hitbox.Name = "Hitbox"
+    Hitbox.Parent = SliderKnob
+    Hitbox.BackgroundTransparency = 1.0 -- Invisible hitbox
+    Hitbox.Size = UDim2.new(3, 0, 3, 0)
+    Hitbox.Position = UDim2.new(-1, 0, -1, 0)
+    Hitbox.ZIndex = 14
 
     -- Dragging Logic
     local userInputService = game:GetService("UserInputService")
     local dragging = false
 
-    SliderKnob.InputBegan:Connect(function(input)
+    local function updateKnobPosition(input)
+        local scale = math.clamp((input.Position.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
+        value = math.floor(min + (max - min) * scale)
+        SliderKnob.Position = UDim2.new(scale, 0, -0.75, 0)
+        callback(value)
+    end
+
+    Hitbox.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
+            updateKnobPosition(input)
         end
     end)
 
-    SliderKnob.InputEnded:Connect(function(input)
+    Hitbox.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = false
         end
@@ -1033,10 +1050,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
 
     userInputService.InputChanged:Connect(function(input)
         if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-            local scale = math.clamp((input.Position.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
-            value = math.floor(min + (max - min) * scale)
-            SliderKnob.Position = UDim2.new(scale, 0, -0.75, 0)
-            callback(value)
+            updateKnobPosition(input)
         end
     end)
 end
