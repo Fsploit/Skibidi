@@ -685,5 +685,109 @@ function nurysium:create_toggle(title, callback)
     end)
 end
 
+function nurysium:create_slider(title, min, max, default, callback)
+    callback = callback or function(value) end
+
+    local Slider = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStroke = Instance.new("UIStroke")
+    local TitleLabel = Instance.new("TextLabel")
+    local SliderBar = Instance.new("Frame")
+    local SliderFill = Instance.new("Frame")
+    local Knob = Instance.new("Frame")
+    local UICornerKnob = Instance.new("UICorner")
+    local Hitbox = Instance.new("TextButton")
+
+    -- Main Frame
+    Slider.Name = title
+    Slider.Parent = ui.Background["functions_frame"]
+    Slider.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Slider.Size = UDim2.new(0, 380, 0, 50)
+    Slider.ZIndex = 10
+
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = Slider
+
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Thickness = 4
+    UIStroke.Parent = Slider
+
+    -- Title
+    TitleLabel.Parent = Slider
+    TitleLabel.BackgroundTransparency = 1.000
+    TitleLabel.Position = UDim2.new(0.05, 0, 0.1, 0)
+    TitleLabel.Size = UDim2.new(0.9, 0, 0.3, 0)
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
+    TitleLabel.TextScaled = true
+    TitleLabel.TextWrapped = true
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Slider Bar
+    SliderBar.Name = "SliderBar"
+    SliderBar.Parent = Slider
+    SliderBar.BackgroundColor3 = Color3.fromRGB(60, 60, 75)
+    SliderBar.Position = UDim2.new(0.05, 0, 0.6, 0)
+    SliderBar.Size = UDim2.new(0.9, 0, 0.2, 0)
+    SliderBar.ZIndex = 11
+
+    -- Slider Fill
+    SliderFill.Name = "SliderFill"
+    SliderFill.Parent = SliderBar
+    SliderFill.BackgroundColor3 = Color3.fromRGB(62, 61, 174)
+    SliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0) -- Default position
+    SliderFill.ZIndex = 12
+
+    -- Knob
+    Knob.Name = "Knob"
+    Knob.Parent = SliderFill
+    Knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Knob.Position = UDim2.new(1, -5, -0.5, 0)
+    Knob.Size = UDim2.new(0, 20, 0, 20)
+    Knob.ZIndex = 13
+
+    UICornerKnob.CornerRadius = UDim.new(1, 0)
+    UICornerKnob.Parent = Knob
+
+    -- Hitbox
+    Hitbox.Name = "Hitbox"
+    Hitbox.Parent = Slider
+    Hitbox.BackgroundTransparency = 1.000
+    Hitbox.Size = UDim2.new(1, 0, 1, 0)
+    Hitbox.Text = ""
+
+    -- Slider Logic
+    local dragging = false
+    local function updatePosition(input)
+        local sliderBarAbsolute = SliderBar.AbsolutePosition
+        local sliderBarSize = SliderBar.AbsoluteSize.X
+        local inputPos = math.clamp(input.Position.X - sliderBarAbsolute.X, 0, sliderBarSize)
+        local percentage = inputPos / sliderBarSize
+        local value = math.floor(min + (percentage * (max - min)))
+        SliderFill.Size = UDim2.new(percentage, 0, 1, 0)
+        Knob.Position = UDim2.new(percentage, -5, -0.5, 0)
+        callback(value)
+    end
+
+    Hitbox.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+        end
+    end)
+
+    Hitbox.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            updatePosition(input)
+        end
+    end)
+end
+
 
 return nurysium
