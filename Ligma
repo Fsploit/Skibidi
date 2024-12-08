@@ -880,7 +880,7 @@ function nurysium:create_dropdown(name, section_name, options, callback)
     CloseButton.Position = UDim2.new(0.9, 0, 0.1, 0)
     CloseButton.Size = UDim2.new(0.1, 0, 0.8, 0)
     CloseButton.Font = Enum.Font.GothamBold
-    CloseButton.Text = "X"
+    CloseButton.Text = ""
     CloseButton.TextColor3 = Color3.fromRGB(231, 231, 243)
     CloseButton.TextScaled = true
     CloseButton.Visible = false
@@ -888,6 +888,8 @@ function nurysium:create_dropdown(name, section_name, options, callback)
     -- Populate Dropdown Options
     for _, option in ipairs(options) do
         local OptionButton = Instance.new("TextButton")
+        local OptionCorner = Instance.new("UICorner")
+
         OptionButton.Name = option
         OptionButton.Parent = DropdownList
         OptionButton.BackgroundColor3 = Color3.fromRGB(46, 43, 56)
@@ -898,6 +900,10 @@ function nurysium:create_dropdown(name, section_name, options, callback)
         OptionButton.TextColor3 = Color3.fromRGB(231, 231, 243)
         OptionButton.TextScaled = true
         OptionButton.TextWrapped = true
+
+        -- Add rounded edges to the option
+        OptionCorner.CornerRadius = UDim.new(0, 10)
+        OptionCorner.Parent = OptionButton
 
         OptionButton.MouseButton1Click:Connect(function()
             DropdownButton.Text = option
@@ -928,5 +934,6 @@ function nurysium:create_dropdown(name, section_name, options, callback)
         DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.3, true)
     end)
 end
+
 
 return nurysium
