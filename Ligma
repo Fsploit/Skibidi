@@ -935,7 +935,6 @@ function nurysium:create_dropdown(name, section_name, options, callback)
     end)
 end
 
-
 function nurysium:create_slider(name, section_name, min, max, callback)
     task.wait(0.15)
 
@@ -967,7 +966,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     UICorner.Parent = Example
 
     UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    UIStroke.Color = Color3.fromRGB(0, 0, 0) -- Matches button outline
+    UIStroke.Color = Color3.fromRGB(60, 60, 80) -- Matches button outline
     UIStroke.Thickness = 4
     UIStroke.Parent = Example
 
@@ -1012,7 +1011,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     KnobCorner.Parent = SliderKnob
 
     KnobStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    KnobStroke.Color = Color3.fromRGB(0, 0, 0)-- Matches button outline
+    KnobStroke.Color = Color3.fromRGB(60, 60, 80) -- Matches button outline
     KnobStroke.Thickness = 1.8
     KnobStroke.Parent = SliderKnob
 
@@ -1041,6 +1040,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
         end
     end)
 end
+
 
 
 return nurysium
