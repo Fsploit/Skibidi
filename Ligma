@@ -785,27 +785,33 @@ function nurysium:create_toggle(name, section_name, callback)
     end)
 end
 
-function nurysium:create_textbox(name, section_name, callback)
+
+function nurysium:create_dropdown(name, section_name, options, callback)
     task.wait(0.15)
 
-    callback = callback or function(value) end
+    callback = callback or function(selected) end
+    options = options or {}
 
+    local expanded = false
+
+    -- Main Frame
     local Example = Instance.new("Frame")
     local UICorner = Instance.new("UICorner")
     local UIStroke = Instance.new("UIStroke")
     local UIGradient = Instance.new("UIGradient")
     local Title = Instance.new("TextLabel")
-    local TextBox = Instance.new("TextBox")
+    local DropdownButton = Instance.new("TextButton")
+    local DropdownList = Instance.new("Frame")
     local UICorner_2 = Instance.new("UICorner")
+    local UIListLayout = Instance.new("UIListLayout")
+    local CloseButton = Instance.new("TextButton")
 
-    -- Main Frame
     Example.Name = name
     Example.Parent = ui.Background["functions_frame"]
     Example.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    Example.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Example.BorderSizePixel = 0
     Example.Position = UDim2.new(0.042, 0, 0.015, 0)
-    Example.Size = UDim2.new(0, 380, 0, 60)
+    Example.Size = UDim2.new(0, 380, 0, 40)
     Example.ZIndex = 10
 
     UICorner.CornerRadius = UDim.new(0, 10)
@@ -826,7 +832,6 @@ function nurysium:create_textbox(name, section_name, callback)
     -- Title
     Title.Name = "Title"
     Title.Parent = Example
-    Title.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
     Title.BackgroundTransparency = 1.000
     Title.Position = UDim2.new(0.044, 0, 0.1, 0)
     Title.Size = UDim2.new(0, 140, 0, 20)
@@ -838,31 +843,89 @@ function nurysium:create_textbox(name, section_name, callback)
     Title.TextWrapped = true
     Title.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- Text Box
-    TextBox.Name = "TextBox"
-    TextBox.Parent = Example
-    TextBox.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    TextBox.BorderSizePixel = 0
-    TextBox.Position = UDim2.new(0.6, 0, 0.5, 0)
-    TextBox.Size = UDim2.new(0.35, 0, 0.5, 0)
-    TextBox.Font = Enum.Font.GothamBold
-    TextBox.Text = "Enter Value"
-    TextBox.TextColor3 = Color3.fromRGB(231, 231, 243)
-    TextBox.TextScaled = true
-    TextBox.TextWrapped = true
-    TextBox.PlaceholderColor3 = Color3.fromRGB(180, 180, 180)
-    TextBox.PlaceholderText = "Type here"
-    TextBox.ClearTextOnFocus = true
+    -- Dropdown Button
+    DropdownButton.Name = "DropdownButton"
+    DropdownButton.Parent = Example
+    DropdownButton.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    DropdownButton.BorderSizePixel = 0
+    DropdownButton.Position = UDim2.new(0.6, 0, 0.2, 0)
+    DropdownButton.Size = UDim2.new(0.35, 0, 0.6, 0)
+    DropdownButton.Font = Enum.Font.GothamBold
+    DropdownButton.Text = "Select"
+    DropdownButton.TextColor3 = Color3.fromRGB(231, 231, 243)
+    DropdownButton.TextScaled = true
+    DropdownButton.TextWrapped = true
 
-    UICorner_2.CornerRadius = UDim.new(0, 8)
-    UICorner_2.Parent = TextBox
+    -- Dropdown List
+    DropdownList.Name = "DropdownList"
+    DropdownList.Parent = Example
+    DropdownList.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    DropdownList.BorderSizePixel = 0
+    DropdownList.Position = UDim2.new(0, 0, 1, 0)
+    DropdownList.Size = UDim2.new(1, 0, 0, 0) -- Initially hidden
+    DropdownList.ClipsDescendants = true
+    DropdownList.ZIndex = 15
 
-    -- Text Box Logic
-    TextBox.FocusLost:Connect(function(enterPressed)
-        if enterPressed then
-            local value = TextBox.Text
-            callback(value)
+    UICorner_2.CornerRadius = UDim.new(0, 10)
+    UICorner_2.Parent = DropdownList
+
+    UIListLayout.Parent = DropdownList
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 5)
+
+    -- Close Button
+    CloseButton.Name = "CloseButton"
+    CloseButton.Parent = Example
+    CloseButton.BackgroundTransparency = 1
+    CloseButton.Position = UDim2.new(0.9, 0, 0.1, 0)
+    CloseButton.Size = UDim2.new(0.1, 0, 0.8, 0)
+    CloseButton.Font = Enum.Font.GothamBold
+    CloseButton.Text = "X"
+    CloseButton.TextColor3 = Color3.fromRGB(231, 231, 243)
+    CloseButton.TextScaled = true
+    CloseButton.Visible = false
+
+    -- Populate Dropdown Options
+    for _, option in ipairs(options) do
+        local OptionButton = Instance.new("TextButton")
+        OptionButton.Name = option
+        OptionButton.Parent = DropdownList
+        OptionButton.BackgroundColor3 = Color3.fromRGB(46, 43, 56)
+        OptionButton.BorderSizePixel = 0
+        OptionButton.Size = UDim2.new(1, 0, 0, 30)
+        OptionButton.Font = Enum.Font.GothamBold
+        OptionButton.Text = option
+        OptionButton.TextColor3 = Color3.fromRGB(231, 231, 243)
+        OptionButton.TextScaled = true
+        OptionButton.TextWrapped = true
+
+        OptionButton.MouseButton1Click:Connect(function()
+            DropdownButton.Text = option
+            callback(option)
+            expanded = false
+            CloseButton.Visible = false
+            DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.3, true)
+        end)
+    end
+
+    -- Toggle Dropdown
+    DropdownButton.MouseButton1Click:Connect(function()
+        expanded = not expanded
+
+        if expanded then
+            CloseButton.Visible = true
+            DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 35), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.3, true)
+        else
+            CloseButton.Visible = false
+            DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.3, true)
         end
+    end)
+
+    -- Close Dropdown
+    CloseButton.MouseButton1Click:Connect(function()
+        expanded = false
+        CloseButton.Visible = false
+        DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.3, true)
     end)
 end
 
