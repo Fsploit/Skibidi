@@ -578,7 +578,112 @@ function nurysium:create_text_box(title, content, section_name)
 end
 
 
+-- Base Functionality for UI Components
+function nurysium:create_button(title, callback)
+    callback = callback or function() end
+    local Button = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStroke = Instance.new("UIStroke")
+    local TitleLabel = Instance.new("TextLabel")
+    local Hitbox = Instance.new("TextButton")
 
+    Button.Name = title
+    Button.Parent = ui.Background["functions_frame"]
+    Button.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Button.Size = UDim2.new(0, 380, 0, 43)
+    Button.ZIndex = 10
+
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = Button
+
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Thickness = 4
+    UIStroke.Parent = Button
+
+    TitleLabel.Parent = Button
+    TitleLabel.BackgroundTransparency = 1.000
+    TitleLabel.Position = UDim2.new(0.05, 0, 0.25, 0)
+    TitleLabel.Size = UDim2.new(0.9, 0, 0.5, 0)
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
+    TitleLabel.TextScaled = true
+    TitleLabel.TextWrapped = true
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
+
+    Hitbox.Parent = Button
+    Hitbox.Size = UDim2.new(1, 0, 1, 0)
+    Hitbox.BackgroundTransparency = 1.000
+    Hitbox.Text = ""
+    Hitbox.MouseButton1Click:Connect(function()
+        callback()
+    end)
+end
+
+function nurysium:create_toggle(title, callback)
+    callback = callback or function(state) end
+    local toggled = false
+
+    local Toggle = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStroke = Instance.new("UIStroke")
+    local TitleLabel = Instance.new("TextLabel")
+    local ToggleSwitch = Instance.new("Frame")
+    local ToggleKnob = Instance.new("Frame")
+    local Hitbox = Instance.new("TextButton")
+
+    Toggle.Name = title
+    Toggle.Parent = ui.Background["functions_frame"]
+    Toggle.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Toggle.Size = UDim2.new(0, 380, 0, 43)
+    Toggle.ZIndex = 10
+
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = Toggle
+
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Thickness = 4
+    UIStroke.Parent = Toggle
+
+    TitleLabel.Parent = Toggle
+    TitleLabel.BackgroundTransparency = 1.000
+    TitleLabel.Position = UDim2.new(0.05, 0, 0.25, 0)
+    TitleLabel.Size = UDim2.new(0.7, 0, 0.5, 0)
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
+    TitleLabel.TextScaled = true
+    TitleLabel.TextWrapped = true
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+    ToggleSwitch.Parent = Toggle
+    ToggleSwitch.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+    ToggleSwitch.Position = UDim2.new(0.8, 0, 0.25, 0)
+    ToggleSwitch.Size = UDim2.new(0.15, 0, 0.5, 0)
+    ToggleSwitch.ZIndex = 10
+
+    ToggleKnob.Parent = ToggleSwitch
+    ToggleKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleKnob.Position = UDim2.new(0.1, 0, 0.1, 0)
+    ToggleKnob.Size = UDim2.new(0.4, 0, 0.8, 0)
+    ToggleKnob.ZIndex = 11
+
+    Hitbox.Parent = Toggle
+    Hitbox.Size = UDim2.new(1, 0, 1, 0)
+    Hitbox.BackgroundTransparency = 1.000
+    Hitbox.Text = ""
+    Hitbox.MouseButton1Click:Connect(function()
+        toggled = not toggled
+        callback(toggled)
+        ToggleKnob:TweenPosition(
+            toggled and UDim2.new(0.5, 0, 0.1, 0) or UDim2.new(0.1, 0, 0.1, 0),
+            "Out",
+            "Quad",
+            0.2,
+            true
+        )
+    end)
+end
 
 
 return nurysium
