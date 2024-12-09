@@ -750,7 +750,7 @@ function nurysium:create_button(name, section_name, callback)
     end)
 end
 
-function nurysium:create_dropdown(name, section_name, contentList, callback)
+function nurysium:Create_dropdown(name, section_name, contentList, callback)
     task.wait(0.15)
 
     callback = callback or function() end
@@ -766,7 +766,7 @@ function nurysium:create_dropdown(name, section_name, contentList, callback)
 
     -- Set dropdown properties
     Dropdown.Name = name
-    Dropdown.Parent = game.Players.LocalPlayer.PlayerGui -- Replace with the appropriate parent in your UI
+    Dropdown.Parent = ui.Background["functions_frame"]  -- Replace with the appropriate parent in your UI
     Dropdown.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
     Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Dropdown.BorderSizePixel = 0
