@@ -952,7 +952,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     UICorner.Parent = Example
 
     UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    UIStroke.Color = Color3.fromRGB(255, 255, 255) -- Matches other button outlines
+    UIStroke.Color = Color3.fromRGB(39, 36, 47) -- Matches other button outlines
     UIStroke.Thickness = 4
     UIStroke.Parent = Example
 
@@ -988,7 +988,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     -- Slider Knob
     SliderKnob.Name = "SliderKnob"
     SliderKnob.Parent = SliderTrack
-    SliderKnob.BackgroundColor3 = Color3.fromRGB(37, 35, 48)  -- Set knob color to match toggle knob
+    SliderKnob.BackgroundColor3 = Color3.fromRGB(37, 35, 48) -- Set knob color to match toggle knob
     SliderKnob.Position = UDim2.new(0, 0, -0.75, 0)
     SliderKnob.Size = UDim2.new(0, 15, 2, 0)
     SliderKnob.ZIndex = 15
@@ -997,7 +997,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     KnobCorner.Parent = SliderKnob
 
     KnobStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    KnobStroke.Color = Color3.fromRGB(255, 255, 255) -- Matches button outline
+    KnobStroke.Color = Color3.fromRGB(39, 36, 47) -- Matches button outline
     KnobStroke.Thickness = 1.8
     KnobStroke.Parent = SliderKnob
 
