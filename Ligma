@@ -499,8 +499,7 @@ function nurysium:create_section(name: string, imageID: number)
     tween_service:Create(ImageLabel, TweenInfo.new(3, Enum.EasingStyle.Exponential), {ImageTransparency = 0.45}):Play()
 end
 
-
-function nurysium:create_game_image(game_id, section_name)
+function nurysium:create_game_image(image_url, section_name)
     task.wait(0.15)
 
     local GameImage = Instance.new("Frame")
@@ -516,7 +515,7 @@ function nurysium:create_game_image(game_id, section_name)
     GameImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
     GameImage.BorderSizePixel = 0
     GameImage.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)  -- Adjust position as needed
-    GameImage.Size = UDim2.new(0, 380, 0, 190)  -- Size of the rectangle (50x50)
+    GameImage.Size = UDim2.new(0, 380, 0, 190)  -- Set size to 380x190
     GameImage.ZIndex = 10
 
     -- Add rounded corners to the frame
@@ -543,7 +542,7 @@ function nurysium:create_game_image(game_id, section_name)
     ImageLabel.BackgroundTransparency = 1.000
     ImageLabel.Size = UDim2.new(1, 0, 1, 0)  -- Fill the whole frame with the image
     ImageLabel.ZIndex = 11
-    ImageLabel.Image = "https://www.roblox.com/game-thumbnail/image?gameId=" .. tostring(game_id)  -- Set game image using the game ID
+    ImageLabel.Image = image_url  -- Set the image to the provided URL
     ImageLabel.ScaleType = Enum.ScaleType.Fit  -- Fit the image into the frame
     ImageLabel.ClipsDescendants = true  -- Clip any parts of the image that overflow
 
@@ -556,6 +555,8 @@ function nurysium:create_game_image(game_id, section_name)
         end
     end)
 end
+
+
 
 
 function nurysium:create_paragraph(title, content, section_name)
