@@ -750,5 +750,135 @@ function nurysium:create_button(name, section_name, callback)
     end)
 end
 
+function create_dropdown(name, section_name, contentList, callback)
+    task.wait(0.15)
+
+    callback = callback or function() end
+
+    -- Create the main dropdown frame
+    local Dropdown = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStroke = Instance.new("UIStroke")
+    local UIGradient = Instance.new("UIGradient")
+    local Hitbox = Instance.new("TextButton")
+    local Title = Instance.new("TextLabel")
+    local ContentFrame = Instance.new("Frame")
+
+    -- Set dropdown properties
+    Dropdown.Name = name
+    Dropdown.Parent = game.Players.LocalPlayer.PlayerGui -- Replace with the appropriate parent in your UI
+    Dropdown.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Dropdown.BorderSizePixel = 0
+    Dropdown.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)
+    Dropdown.Size = UDim2.new(0, 380, 0, 43)
+    Dropdown.ZIndex = 10
+
+    -- Add corner radius to the dropdown
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = Dropdown
+
+    -- Add stroke to the dropdown
+    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Thickness = 4
+    UIStroke.Parent = Dropdown
+
+    -- Add gradient effect
+    UIGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(46, 43, 56))
+    }
+    UIGradient.Rotation = 36
+    UIGradient.Parent = UIStroke
+
+    -- Hitbox is the clickable area
+    Hitbox.Name = "Hitbox"
+    Hitbox.Parent = Dropdown
+    Hitbox.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    Hitbox.BackgroundTransparency = 1.000
+    Hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Hitbox.BorderSizePixel = 0
+    Hitbox.Size = UDim2.new(1, 0, 1, 0)
+    Hitbox.Font = Enum.Font.SourceSans
+    Hitbox.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Hitbox.TextSize = 1.000
+    Hitbox.TextTransparency = 1.000
+
+    -- Title text
+    Title.Name = "Title"
+    Title.Parent = Dropdown
+    Title.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    Title.BackgroundTransparency = 1.000
+    Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Title.BorderSizePixel = 0
+    Title.Position = UDim2.new(0.0449240729, 0, 0.275129884, 0)
+    Title.Size = UDim2.new(0, 140, 0, 20)
+    Title.ZIndex = 10
+    Title.Font = Enum.Font.GothamBold
+    Title.Text = name
+    Title.TextColor3 = Color3.fromRGB(231, 231, 243)
+    Title.TextScaled = true
+    Title.TextSize = 14.000
+    Title.TextWrapped = true
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Content frame that will be shown when dropdown is expanded
+    ContentFrame.Name = "ContentFrame"
+    ContentFrame.Parent = Dropdown
+    ContentFrame.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    ContentFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ContentFrame.BorderSizePixel = 0
+    ContentFrame.Position = UDim2.new(0, 0, 1, 0)
+    ContentFrame.Size = UDim2.new(0, 380, 0, 0) -- Initially collapsed
+
+    -- Add corner radius to the content frame
+    local contentUICorner = Instance.new("UICorner")
+    contentUICorner.CornerRadius = UDim.new(0, 10)
+    contentUICorner.Parent = ContentFrame
+
+    -- Function to populate the content list dynamically
+    local function populate_content()
+        local yOffset = 0
+        for _, content in ipairs(contentList) do
+            local contentLabel = Instance.new("TextLabel")
+            contentLabel.Name = content
+            contentLabel.Parent = ContentFrame
+            contentLabel.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+            contentLabel.BackgroundTransparency = 1
+            contentLabel.Size = UDim2.new(1, 0, 0, 30)
+            contentLabel.Position = UDim2.new(0, 0, 0, yOffset)
+            contentLabel.Text = content
+            contentLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
+            contentLabel.Font = Enum.Font.Gotham
+            contentLabel.TextSize = 14
+            contentLabel.TextXAlignment = Enum.TextXAlignment.Left
+            contentLabel.TextScaled = true
+
+            yOffset = yOffset + 30
+        end
+    end
+
+    -- Call the function to populate content initially
+    populate_content()
+
+    -- Toggle content visibility when dropdown is clicked
+    local isOpen = false
+    Hitbox.MouseButton1Click:Connect(function()
+        isOpen = not isOpen
+        if isOpen then
+            -- Expand content frame
+            game:GetService("TweenService"):Create(ContentFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                Size = UDim2.new(0, 380, 0, #contentList * 30) -- Adjust content height based on the number of items
+            }):Play()
+        else
+            -- Collapse content frame
+            game:GetService("TweenService"):Create(ContentFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                Size = UDim2.new(0, 380, 0, 0)
+            }):Play()
+        end
+        callback(isOpen)  -- Trigger callback with the current open state
+    end)
+end
 
 return nurysium 
