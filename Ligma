@@ -750,68 +750,53 @@ function nurysium:create_button(name, section_name, callback)
     end)
 end
 
-function nurysium:create_dropdown(name, section_name, contentList, callback)
+function nurysium:create_dropdown(name, section_name, options, callback)
     task.wait(0.15)
 
-    callback = callback or function() end
+    callback = callback or function(selected) end
+    options = options or {}
 
-    -- Create the main dropdown button
-    local Dropdown = Instance.new("Frame")
+    local expanded = false
+
+    -- Main Frame
+    local Example = Instance.new("Frame")
     local UICorner = Instance.new("UICorner")
     local UIStroke = Instance.new("UIStroke")
     local UIGradient = Instance.new("UIGradient")
-    local Hitbox = Instance.new("TextButton")
     local Title = Instance.new("TextLabel")
-    local ContentFrame = Instance.new("Frame")
+    local DropdownButton = Instance.new("TextButton")
+    local DropdownList = Instance.new("Frame")
+    local UICorner_2 = Instance.new("UICorner")
+    local UIListLayout = Instance.new("UIListLayout")
+    local CloseButton = Instance.new("TextButton")
 
-    -- Set dropdown properties
-    Dropdown.Name = name
-    Dropdown.Parent = ui.Background["functions_frame"]  -- Replace with the appropriate parent in your UI
-    Dropdown.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Dropdown.BorderSizePixel = 0
-    Dropdown.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)
-    Dropdown.Size = UDim2.new(0, 380, 0, 43)
-    Dropdown.ZIndex = 10
+    Example.Name = name
+    Example.Parent = ui.Background["functions_frame"]
+    Example.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    Example.BorderSizePixel = 0
+    Example.Position = UDim2.new(0.042, 0, 0.015, 0)
+    Example.Size = UDim2.new(0, 380, 0, 40)
+    Example.ZIndex = 10
 
-    -- Add corner radius to the dropdown
     UICorner.CornerRadius = UDim.new(0, 10)
-    UICorner.Parent = Dropdown
+    UICorner.Parent = Example
 
-    -- Add stroke around the dropdown
     UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     UIStroke.Color = Color3.fromRGB(255, 255, 255)
     UIStroke.Thickness = 4
-    UIStroke.Parent = Dropdown
+    UIStroke.Parent = Example
 
-    -- Add gradient effect to the dropdown
     UIGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)),
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(38, 35, 44)),
         ColorSequenceKeypoint.new(1.00, Color3.fromRGB(46, 43, 56))
     }
     UIGradient.Rotation = 36
     UIGradient.Parent = UIStroke
 
-    -- Hitbox is the clickable area for the dropdown button
-    Hitbox.Name = "Hitbox"
-    Hitbox.Parent = Dropdown
-    Hitbox.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    Hitbox.BackgroundTransparency = 1.000
-    Hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Hitbox.BorderSizePixel = 0
-    Hitbox.Size = UDim2.new(1, 0, 1, 0)
-    Hitbox.Font = Enum.Font.SourceSans
-    Hitbox.TextColor3 = Color3.fromRGB(0, 0, 0)
-    Hitbox.TextSize = 1.000
-    Hitbox.TextTransparency = 1.000
-
-    -- Title text on the dropdown button
+    -- Title
     Title.Name = "Title"
-    Title.Parent = Dropdown
-    Title.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Title.Parent = Example
     Title.BackgroundTransparency = 1.000
-    Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Title.BorderSizePixel = 0
     Title.Position = UDim2.new(0.0449240729, 0, 0.275129884, 0)
     Title.Size = UDim2.new(0, 140, 0, 20)
     Title.ZIndex = 10
@@ -819,65 +804,107 @@ function nurysium:create_dropdown(name, section_name, contentList, callback)
     Title.Text = name
     Title.TextColor3 = Color3.fromRGB(231, 231, 243)
     Title.TextScaled = true
-    Title.TextSize = 14.000
     Title.TextWrapped = true
     Title.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- Content frame for dropdown items (initially hidden)
-    ContentFrame.Name = "ContentFrame"
-    ContentFrame.Parent = Dropdown
-    ContentFrame.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-    ContentFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ContentFrame.BorderSizePixel = 0
-    ContentFrame.Position = UDim2.new(0, 0, 1, 0)
-    ContentFrame.Size = UDim2.new(0, 380, 0, 0) -- Initially collapsed
+    -- Dropdown Button
+    DropdownButton.Name = "DropdownButton"
+    DropdownButton.Parent = Example
+    DropdownButton.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    DropdownButton.BorderSizePixel = 0
+    DropdownButton.Position = UDim2.new(0.6, 0, 0.2, 0)
+    DropdownButton.Size = UDim2.new(0.35, 0, 0.6, 0)
+    DropdownButton.Font = Enum.Font.GothamBold
+    DropdownButton.Text = "Select"
+    DropdownButton.TextColor3 = Color3.fromRGB(231, 231, 243)
+    DropdownButton.TextScaled = true
+    DropdownButton.TextWrapped = true
 
-    -- Add corner radius to the content frame
-    local contentUICorner = Instance.new("UICorner")
-    contentUICorner.CornerRadius = UDim.new(0, 10)
-    contentUICorner.Parent = ContentFrame
+    -- Dropdown List
+    DropdownList.Name = "DropdownList"
+    DropdownList.Parent = Example
+    DropdownList.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    DropdownList.BorderSizePixel = 0
+    DropdownList.Position = UDim2.new(0, 0, 1, 0)
+    DropdownList.Size = UDim2.new(1, 0, 0, 0) -- Initially hidden
+    DropdownList.ClipsDescendants = true
+    DropdownList.ZIndex = 15
 
-    -- Function to populate the content list dynamically
-    local function populate_content()
-        local yOffset = 0
-        for _, content in ipairs(contentList) do
-            local contentLabel = Instance.new("TextLabel")
-            contentLabel.Name = content
-            contentLabel.Parent = ContentFrame
-            contentLabel.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
-            contentLabel.BackgroundTransparency = 1
-            contentLabel.Size = UDim2.new(1, 0, 0, 30)
-            contentLabel.Position = UDim2.new(0, 0, 0, yOffset)
-            contentLabel.Text = content
-            contentLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
-            contentLabel.Font = Enum.Font.Gotham
-            contentLabel.TextSize = 14
-            contentLabel.TextXAlignment = Enum.TextXAlignment.Left
-            contentLabel.TextScaled = true
+    UICorner_2.CornerRadius = UDim.new(0, 10)
+    UICorner_2.Parent = DropdownList
 
-            yOffset = yOffset + 30
-        end
+    UIListLayout.Parent = DropdownList
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 5)
+
+    -- Close Button
+    CloseButton.Name = "CloseButton"
+    CloseButton.Parent = Example
+    CloseButton.BackgroundTransparency = 1
+    CloseButton.Position = UDim2.new(0.9, 0, 0.1, 0)
+    CloseButton.Size = UDim2.new(0.1, 0, 0.8, 0)
+    CloseButton.Font = Enum.Font.GothamBold
+    CloseButton.Text = ""
+    CloseButton.TextColor3 = Color3.fromRGB(231, 231, 243)
+    CloseButton.TextScaled = true
+    CloseButton.Visible = false
+
+    -- Populate Dropdown Options
+    for _, option in ipairs(options) do
+        local OptionButton = Instance.new("TextButton")
+        local OptionCorner = Instance.new("UICorner")
+
+        OptionButton.Name = option
+        OptionButton.Parent = DropdownList
+        OptionButton.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+        OptionButton.BorderSizePixel = 0
+        OptionButton.Size = UDim2.new(1, 0, 0, 30)
+        OptionButton.Font = Enum.Font.GothamBold
+        OptionButton.Text = option
+        OptionButton.TextColor3 = Color3.fromRGB(231, 231, 243)
+        OptionButton.TextScaled = true
+        OptionButton.TextWrapped = true
+
+        -- Add rounded edges to the option
+        OptionCorner.CornerRadius = UDim.new(0, 10)
+        OptionCorner.Parent = OptionButton
+
+        OptionButton.MouseButton1Click:Connect(function()
+            DropdownButton.Text = option
+            callback(option)
+            expanded = false
+            CloseButton.Visible = false
+            DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.3, true)
+        end)
     end
 
-    -- Call the function to populate content initially
-    populate_content()
+    -- Toggle Dropdown
+    DropdownButton.MouseButton1Click:Connect(function()
+        expanded = not expanded
 
-    -- Toggle content visibility when dropdown button is clicked
-    local isOpen = false
-    Hitbox.MouseButton1Click:Connect(function()
-        isOpen = not isOpen
-        if isOpen then
-            -- Expand content frame
-            game:GetService("TweenService"):Create(ContentFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-                Size = UDim2.new(0, 380, 0, #contentList * 30) -- Adjust content height based on the number of items
-            }):Play()
+        if expanded then
+            CloseButton.Visible = true
+            DropdownList:TweenSize(UDim2.new(1, 0, 0, #options * 35), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.3, true)
         else
-            -- Collapse content frame
-            game:GetService("TweenService"):Create(ContentFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-                Size = UDim2.new(0, 380, 0, 0)
-            }):Play()
+            CloseButton.Visible = false
+            DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.3, true)
         end
-        callback(isOpen)  -- Trigger callback with the current open state
+    end)
+
+    -- Close Dropdown
+    CloseButton.MouseButton1Click:Connect(function()
+        expanded = false
+        CloseButton.Visible = false
+        DropdownList:TweenSize(UDim2.new(1, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.3, true)
+    end)
+
+    -- Button visibility based on section name
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if not section_name:match(ui_data.current_section) then
+            Example.Visible = false
+        else
+            Example.Visible = true
+        end
     end)
 end
 
