@@ -750,12 +750,12 @@ function nurysium:create_button(name, section_name, callback)
     end)
 end
 
-function nurysium:Create_dropdown(name, section_name, contentList, callback)
+function nurysium:create_dropdown(name, section_name, contentList, callback)
     task.wait(0.15)
 
     callback = callback or function() end
 
-    -- Create the main dropdown frame
+    -- Create the main dropdown button
     local Dropdown = Instance.new("Frame")
     local UICorner = Instance.new("UICorner")
     local UIStroke = Instance.new("UIStroke")
@@ -767,7 +767,7 @@ function nurysium:Create_dropdown(name, section_name, contentList, callback)
     -- Set dropdown properties
     Dropdown.Name = name
     Dropdown.Parent = ui.Background["functions_frame"]  -- Replace with the appropriate parent in your UI
-    Dropdown.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    Dropdown.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
     Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Dropdown.BorderSizePixel = 0
     Dropdown.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)
@@ -778,13 +778,13 @@ function nurysium:Create_dropdown(name, section_name, contentList, callback)
     UICorner.CornerRadius = UDim.new(0, 10)
     UICorner.Parent = Dropdown
 
-    -- Add stroke to the dropdown
+    -- Add stroke around the dropdown
     UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     UIStroke.Color = Color3.fromRGB(255, 255, 255)
     UIStroke.Thickness = 4
     UIStroke.Parent = Dropdown
 
-    -- Add gradient effect
+    -- Add gradient effect to the dropdown
     UIGradient.Color = ColorSequence.new{
         ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)),
         ColorSequenceKeypoint.new(1.00, Color3.fromRGB(46, 43, 56))
@@ -792,10 +792,10 @@ function nurysium:Create_dropdown(name, section_name, contentList, callback)
     UIGradient.Rotation = 36
     UIGradient.Parent = UIStroke
 
-    -- Hitbox is the clickable area
+    -- Hitbox is the clickable area for the dropdown button
     Hitbox.Name = "Hitbox"
     Hitbox.Parent = Dropdown
-    Hitbox.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    Hitbox.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
     Hitbox.BackgroundTransparency = 1.000
     Hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Hitbox.BorderSizePixel = 0
@@ -805,10 +805,10 @@ function nurysium:Create_dropdown(name, section_name, contentList, callback)
     Hitbox.TextSize = 1.000
     Hitbox.TextTransparency = 1.000
 
-    -- Title text
+    -- Title text on the dropdown button
     Title.Name = "Title"
     Title.Parent = Dropdown
-    Title.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    Title.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
     Title.BackgroundTransparency = 1.000
     Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Title.BorderSizePixel = 0
@@ -823,10 +823,10 @@ function nurysium:Create_dropdown(name, section_name, contentList, callback)
     Title.TextWrapped = true
     Title.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- Content frame that will be shown when dropdown is expanded
+    -- Content frame for dropdown items (initially hidden)
     ContentFrame.Name = "ContentFrame"
     ContentFrame.Parent = Dropdown
-    ContentFrame.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    ContentFrame.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
     ContentFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ContentFrame.BorderSizePixel = 0
     ContentFrame.Position = UDim2.new(0, 0, 1, 0)
@@ -844,7 +844,7 @@ function nurysium:Create_dropdown(name, section_name, contentList, callback)
             local contentLabel = Instance.new("TextLabel")
             contentLabel.Name = content
             contentLabel.Parent = ContentFrame
-            contentLabel.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+            contentLabel.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
             contentLabel.BackgroundTransparency = 1
             contentLabel.Size = UDim2.new(1, 0, 0, 30)
             contentLabel.Position = UDim2.new(0, 0, 0, yOffset)
@@ -862,7 +862,7 @@ function nurysium:Create_dropdown(name, section_name, contentList, callback)
     -- Call the function to populate content initially
     populate_content()
 
-    -- Toggle content visibility when dropdown is clicked
+    -- Toggle content visibility when dropdown button is clicked
     local isOpen = false
     Hitbox.MouseButton1Click:Connect(function()
         isOpen = not isOpen
