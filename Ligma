@@ -573,6 +573,43 @@ function nurysium:create_paragraph(title, content, section_name)
     end)
 end
 
+function nurysium:create_divider(divider_text, section_name)
+    task.wait(0.15)
+
+    local Divider = Instance.new("Frame")
+    local DividerLabel = Instance.new("TextLabel")
+
+    Divider.Name = "Divider"
+    Divider.Parent = ui.Background["functions_frame"]
+    Divider.BackgroundTransparency = 1.000
+    Divider.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)  -- Adjust position as needed
+    Divider.Size = UDim2.new(0, 380, 0, 30)  -- Adjust height for the divider
+    Divider.ZIndex = 10
+
+    -- Divider Text Label
+    DividerLabel.Name = "DividerLabel"
+    DividerLabel.Parent = Divider
+    DividerLabel.BackgroundTransparency = 1.000
+    DividerLabel.Position = UDim2.new(0.5, 0, 0.5, 0)  -- Centered text
+    DividerLabel.Size = UDim2.new(0, 380, 0, 20)  -- Adjust size of the label as needed
+    DividerLabel.ZIndex = 11
+    DividerLabel.Font = Enum.Font.Gotham
+    DividerLabel.Text = divider_text or "Hi I'm a divider!"  -- Default divider text
+    DividerLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
+    DividerLabel.TextScaled = true
+    DividerLabel.TextWrapped = true
+    DividerLabel.TextXAlignment = Enum.TextXAlignment.Center
+
+    -- Make the divider visible based on the section
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if not section_name:match(ui_data.current_section) then
+            Divider.Visible = false
+        else
+            Divider.Visible = true
+        end
+    end)
+end
+
 
 function nurysium:create_toggle(name: string, section_name: string, callback)
     task.wait(0.15)
