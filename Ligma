@@ -1377,4 +1377,96 @@ function nurysium:create_notification(title, content)
     end)
 end
 
+function nurysium:create_textbox(name, section_name, default_text, callback)
+    task.wait(0.15)
+
+    callback = callback or function(text) end
+    default_text = default_text or ""
+
+    local TextBoxFrame = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStroke = Instance.new("UIStroke")
+    local UIGradient = Instance.new("UIGradient")
+    local InputField = Instance.new("TextBox")
+    local Title = Instance.new("TextLabel")
+
+    -- Setup textbox frame properties
+    TextBoxFrame.Name = name
+    TextBoxFrame.Parent = ui.Background["functions_frame"]
+    TextBoxFrame.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    TextBoxFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TextBoxFrame.BorderSizePixel = 0
+    TextBoxFrame.Position = UDim2.new(0.042, 0, 0.015, 0)
+    TextBoxFrame.Size = UDim2.new(0, 380, 0, 43)
+    TextBoxFrame.ZIndex = 10
+
+    -- Add corner radius
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = TextBoxFrame
+
+    -- Add stroke
+    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Thickness = 4
+    UIStroke.Parent = TextBoxFrame
+
+    -- Add gradient effect
+    UIGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(46, 43, 56))
+    }
+    UIGradient.Rotation = 36
+    UIGradient.Parent = UIStroke
+
+    -- Title label
+    Title.Name = "Title"
+    Title.Parent = TextBoxFrame
+    Title.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Title.BackgroundTransparency = 1.000
+    Title.Position = UDim2.new(0.044, 0, 0.1, 0)
+    Title.Size = UDim2.new(0.4, 0, 0.8, 0)
+    Title.ZIndex = 10
+    Title.Font = Enum.Font.GothamBold
+    Title.Text = name
+    Title.TextColor3 = Color3.fromRGB(231, 231, 243)
+    Title.TextScaled = true
+    Title.TextSize = 14.000
+    Title.TextWrapped = true
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Input field
+    InputField.Name = "InputField"
+    InputField.Parent = TextBoxFrame
+    InputField.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    InputField.BorderSizePixel = 0
+    InputField.Position = UDim2.new(0.5, 0, 0.1, 0)
+    InputField.Size = UDim2.new(0.45, 0, 0.8, 0)
+    InputField.ZIndex = 10
+    InputField.Font = Enum.Font.Gotham
+    InputField.PlaceholderText = "Enter text"
+    InputField.Text = default_text
+    InputField.TextColor3 = Color3.fromRGB(231, 231, 243)
+    InputField.TextScaled = true
+    InputField.TextSize = 14.000
+    InputField.TextWrapped = true
+    InputField.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Visibility based on section name
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if not section_name:match(ui_data.current_section) and not table.find(search_table, name) then
+            TextBoxFrame.Visible = false
+        else
+            TextBoxFrame.Visible = true
+        end
+    end)
+
+    -- Trigger callback when the text changes
+    InputField.FocusLost:Connect(function(enterPressed)
+        if enterPressed then
+            callback(InputField.Text)
+        end
+    end)
+end
+
+
 return nurysium 
