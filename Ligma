@@ -1377,5 +1377,72 @@ function nurysium:create_notification(title, content)
     end)
 end
 
+function nurysium:create_developer_paragraph(title, content, image_id)
+    -- Developer Paragraph UI
+    local DeveloperParagraph = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStroke = Instance.new("UIStroke")
+    local Image = Instance.new("ImageLabel")
+    local TitleLabel = Instance.new("TextLabel")
+    local ContentLabel = Instance.new("TextLabel")
+
+    -- Frame Setup
+    DeveloperParagraph.Name = "DeveloperParagraph"
+    DeveloperParagraph.Parent = ui.Background["functions_frame"] -- Adjust as necessary
+    DeveloperParagraph.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    DeveloperParagraph.BorderSizePixel = 0
+    DeveloperParagraph.Position = UDim2.new(0.042, 0, 0.015, 0)
+    DeveloperParagraph.Size = UDim2.new(0, 380, 0, 80)
+    DeveloperParagraph.ZIndex = 10
+
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = DeveloperParagraph
+
+    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    UIStroke.Color = Color3.fromRGB(39, 36, 47)
+    UIStroke.Thickness = 4
+    UIStroke.Parent = DeveloperParagraph
+
+    -- Image
+    Image.Name = "Image"
+    Image.Parent = DeveloperParagraph
+    Image.BackgroundTransparency = 1
+    Image.Position = UDim2.new(0.02, 0, 0.1, 0)
+    Image.Size = UDim2.new(0, 60, 0, 60)
+    Image.ZIndex = 11
+    Image.Image = image_id
+    Image.ScaleType = Enum.ScaleType.Fit
+
+    -- Title
+    TitleLabel.Name = "Title"
+    TitleLabel.Parent = DeveloperParagraph
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Position = UDim2.new(0.2, 0, 0.1, 0)
+    TitleLabel.Size = UDim2.new(0.75, 0, 0.3, 0)
+    TitleLabel.ZIndex = 12
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
+    TitleLabel.TextSize = 14
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Content
+    ContentLabel.Name = "Content"
+    ContentLabel.Parent = DeveloperParagraph
+    ContentLabel.BackgroundTransparency = 1
+    ContentLabel.Position = UDim2.new(0.2, 0, 0.5, 0)
+    ContentLabel.Size = UDim2.new(0.75, 0, 0.4, 0)
+    ContentLabel.ZIndex = 12
+    ContentLabel.Font = Enum.Font.Gotham
+    ContentLabel.Text = content
+    ContentLabel.TextColor3 = Color3.fromRGB(200, 200, 220)
+    ContentLabel.TextSize = 12
+    ContentLabel.TextWrapped = true
+    ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
+
+    return DeveloperParagraph
+end
+
 
 return nurysium 
