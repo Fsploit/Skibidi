@@ -920,121 +920,113 @@ function nurysium:create_button(name, section_name, callback)
     end)
 end
 
+
 function nurysium:create_slider(name, section_name, min, max, callback)
     task.wait(0.15)
 
+    -- Ensure defaults for optional parameters
     callback = callback or function(value) end
     min, max = min or 0, max or 100
 
-    local value = min
+    local value = min  -- Initial value
 
     -- Main Frame
-    local Example = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local UIStroke = Instance.new("UIStroke")
-    local Title = Instance.new("TextLabel")
     local SliderFrame = Instance.new("Frame")
-    local SliderTrack = Instance.new("Frame")
-    local SliderKnob = Instance.new("Frame")
-    local Hitbox = Instance.new("Frame")
-    local KnobCorner = Instance.new("UICorner")
-    local KnobStroke = Instance.new("UIStroke")
+    SliderFrame.Name = name
+    SliderFrame.Parent = ui.Background["functions_frame"]
+    SliderFrame.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    SliderFrame.BorderSizePixel = 0
+    SliderFrame.Size = UDim2.new(0, 380, 0, 50)
+    SliderFrame.ZIndex = 10
 
-    Example.Name = name
-    Example.Parent = ui.Background["functions_frame"]
-    Example.BackgroundColor3 = Color3.fromRGB(38, 35, 44)  -- Updated background color
-    Example.BorderSizePixel = 0
-    Example.Position = UDim2.new(0.042, 0, 0.015, 0)
-    Example.Size = UDim2.new(0, 380, 0, 43)
-    Example.ZIndex = 10
-
+    -- Add rounded corners
+    local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 10)
-    UICorner.Parent = Example
+    UICorner.Parent = SliderFrame
 
-    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    UIStroke.Color = Color3.fromRGB(255, 255, 255) -- Matches other button outlines
+    -- Add a border stroke
+    local UIStroke = Instance.new("UIStroke")
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)
     UIStroke.Thickness = 4
-    UIStroke.Parent = Example
+    UIStroke.Parent = SliderFrame
 
-    -- Title
-    Title.Name = "Title"
-    Title.Parent = Example
-    Title.BackgroundTransparency = 1.000
-    Title.Position = UDim2.new(0.044, 0, 0.1, 0)
-    Title.Size = UDim2.new(0.3, 0, 0.8, 0)
-    Title.ZIndex = 10
-    Title.Font = Enum.Font.GothamBold
-    Title.Text = name
-    Title.TextColor3 = Color3.fromRGB(231, 231, 243)
-    Title.TextScaled = true
-    Title.TextWrapped = true
-    Title.TextXAlignment = Enum.TextXAlignment.Left
+    -- Title Label
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.Name = "Title"
+    TitleLabel.Parent = SliderFrame
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Position = UDim2.new(0.05, 0, 0.1, 0)
+    TitleLabel.Size = UDim2.new(0.3, 0, 0.8, 0)
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Text = name
+    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
+    TitleLabel.TextScaled = true
+    TitleLabel.TextWrapped = true
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- Slider Frame
-    SliderFrame.Name = "SliderFrame"
-    SliderFrame.Parent = Example
-    SliderFrame.BackgroundTransparency = 1.000
-    SliderFrame.Position = UDim2.new(0.4, 0, 0.2, 0)
-    SliderFrame.Size = UDim2.new(0.55, 0, 0.6, 0)
+    -- Slider Container
+    local SliderContainer = Instance.new("Frame")
+    SliderContainer.Name = "SliderContainer"
+    SliderContainer.Parent = SliderFrame
+    SliderContainer.BackgroundTransparency = 1
+    SliderContainer.Position = UDim2.new(0.4, 0, 0.25, 0)
+    SliderContainer.Size = UDim2.new(0.55, 0, 0.5, 0)
 
-    -- Slider Track
-    SliderTrack.Name = "SliderTrack"
-    SliderTrack.Parent = SliderFrame
-    SliderTrack.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-    SliderTrack.Position = UDim2.new(0, 0, 0.4, 0)
-    SliderTrack.Size = UDim2.new(1, 0, 0.2, 0)
-    SliderTrack.ZIndex = 10
+    -- Track
+    local Track = Instance.new("Frame")
+    Track.Name = "Track"
+    Track.Parent = SliderContainer
+    Track.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+    Track.Size = UDim2.new(1, 0, 0.3, 0)
 
-    -- Slider Knob
-    SliderKnob.Name = "SliderKnob"
-    SliderKnob.Parent = SliderTrack
-    SliderKnob.BackgroundColor3 = Color3.fromRGB(37, 35, 48)  -- Set knob color to match toggle knob
-    SliderKnob.Position = UDim2.new(0, 0, -0.75, 0)
-    SliderKnob.Size = UDim2.new(0, 15, 2, 0)
-    SliderKnob.ZIndex = 15
+    -- Knob
+    local Knob = Instance.new("Frame")
+    Knob.Name = "Knob"
+    Knob.Parent = Track
+    Knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Knob.Position = UDim2.new(0, 0, -0.5, 0)
+    Knob.Size = UDim2.new(0, 15, 1.5, 0)
+    Knob.ZIndex = 15
 
+    -- Rounded knob
+    local KnobCorner = Instance.new("UICorner")
     KnobCorner.CornerRadius = UDim.new(1, 0)
-    KnobCorner.Parent = SliderKnob
+    KnobCorner.Parent = Knob
 
-    KnobStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    KnobStroke.Color = Color3.fromRGB(255, 255, 255) -- Matches button outline
-    KnobStroke.Thickness = 1.8
-    KnobStroke.Parent = SliderKnob
-
-    -- Hitbox for Better Dragging
+    -- Hitbox for better dragging
+    local Hitbox = Instance.new("Frame")
     Hitbox.Name = "Hitbox"
-    Hitbox.Parent = SliderKnob
-    Hitbox.BackgroundTransparency = 1.0 -- Invisible hitbox
+    Hitbox.Parent = Knob
+    Hitbox.BackgroundTransparency = 1
     Hitbox.Size = UDim2.new(3, 0, 3, 0)
     Hitbox.Position = UDim2.new(-1, 0, -1, 0)
-    Hitbox.ZIndex = 14
 
-    -- Dragging Logic
-    local userInputService = game:GetService("UserInputService")
+    -- Dragging logic
     local dragging = false
+    local userInputService = game:GetService("UserInputService")
 
     local function updateKnobPosition(input)
-        local scale = math.clamp((input.Position.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
+        local scale = math.clamp((input.Position.X - Track.AbsolutePosition.X) / Track.AbsoluteSize.X, 0, 1)
         value = math.floor(min + (max - min) * scale)
-        SliderKnob.Position = UDim2.new(scale, 0, -0.75, 0)
+        Knob.Position = UDim2.new(scale, 0, -0.5, 0)
         callback(value)
     end
 
     Hitbox.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = true
             updateKnobPosition(input)
         end
     end)
 
     Hitbox.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = false
         end
     end)
 
     userInputService.InputChanged:Connect(function(input)
-        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
             updateKnobPosition(input)
         end
     end)
@@ -1042,9 +1034,9 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     -- Visibility based on section
     game:GetService("RunService").Heartbeat:Connect(function()
         if not section_name:match(ui_data.current_section) then
-            Example.Visible = false
+            SliderFrame.Visible = false
         else
-            Example.Visible = true
+            SliderFrame.Visible = true
         end
     end)
 end
