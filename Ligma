@@ -400,7 +400,7 @@ function nurysium: init(name: string, is_draggable: boolean, parent)
     end)
 end
 
-function nurysium: create_section(name: string, imageID: number)
+function nurysium:create_section(name: string, imageID: number)
     task.wait(0.5)
 
     local Example = Instance.new("TextButton", ui.Background.Sections.real_sections)
