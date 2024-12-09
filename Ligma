@@ -1304,6 +1304,12 @@ function nurysium:create_notification(title, content)
     local notification_time = 5 -- Time the notification will stay visible
     local animation_speed = 0.5 -- Speed of animations
 
+    -- Notification GUI
+    local NotificationGUI = Instance.new("ScreenGui")
+    NotificationGUI.Name = "NotificationGUI"
+    NotificationGUI.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    NotificationGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
     -- Notification Frame
     local Notification = Instance.new("Frame")
     local UICorner = Instance.new("UICorner")
@@ -1313,7 +1319,7 @@ function nurysium:create_notification(title, content)
 
     -- Notification Setup
     Notification.Name = "Notification"
-    Notification.Parent = ui.Background -- Parent this to the main UI
+    Notification.Parent = NotificationGUI
     Notification.AnchorPoint = Vector2.new(1, 0)
     Notification.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
     Notification.BorderSizePixel = 0
@@ -1366,7 +1372,7 @@ function nurysium:create_notification(title, content)
         -- Outro Animation (Slide Out)
         Notification:TweenPosition(UDim2.new(1, 200, 0.05, 0), "In", "Quad", animation_speed, true, function()
             -- Cleanup after animation
-            Notification:Destroy()
+            NotificationGUI:Destroy()
         end)
     end)
 end
