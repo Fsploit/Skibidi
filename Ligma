@@ -664,47 +664,50 @@ function nurysium:create_toggle(name: string, section_name: string, callback)
     end)
 end
 
-function nurysium:create_button(name: string, section_name: string, callback)
+function nurysium:create_button(name, section_name, callback)
     task.wait(0.15)
 
-    -- Set the callback to an empty function if not provided
     callback = callback or function() end
 
-    -- Create all necessary UI elements (frames, buttons, etc.)
-    local Example = Instance.new("Frame")
+    local Button = Instance.new("Frame")
     local UICorner = Instance.new("UICorner")
     local UIStroke = Instance.new("UIStroke")
     local UIGradient = Instance.new("UIGradient")
     local Hitbox = Instance.new("TextButton")
-    local UIGradient_2 = Instance.new("UIGradient")
     local Title = Instance.new("TextLabel")
-    local Button = Instance.new("Frame")
 
-    -- Setup UI properties
-    Example.Name = name
-    Example.Parent = ui.Background["functions_frame"]
-    Example.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Example.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Example.BorderSizePixel = 0
-    Example.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)
-    Example.Size = UDim2.new(0, 380, 0, 43)
-    Example.ZIndex = 10
+    -- Setup button properties
+    Button.Name = name
+    Button.Parent = ui.Background["functions_frame"]
+    Button.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Button.BorderSizePixel = 0
+    Button.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)
+    Button.Size = UDim2.new(0, 380, 0, 43)
+    Button.ZIndex = 10
 
+    -- Add a corner radius to the button
     UICorner.CornerRadius = UDim.new(0, 10)
-    UICorner.Parent = Example
+    UICorner.Parent = Button
 
+    -- Add stroke around the button
     UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     UIStroke.Color = Color3.fromRGB(255, 255, 255)
     UIStroke.Thickness = 4
-    UIStroke.Parent = Example
+    UIStroke.Parent = Button
 
-    UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(46, 43, 56))}
+    -- Add gradient effect to the button
+    UIGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(46, 43, 56))
+    }
     UIGradient.Rotation = 36
     UIGradient.Parent = UIStroke
 
+    -- Hitbox is the clickable area for the button
     Hitbox.Name = "Hitbox"
-    Hitbox.Parent = Example
-    Hitbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Hitbox.Parent = Button
+    Hitbox.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
     Hitbox.BackgroundTransparency = 1.000
     Hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Hitbox.BorderSizePixel = 0
@@ -714,13 +717,10 @@ function nurysium:create_button(name: string, section_name: string, callback)
     Hitbox.TextSize = 1.000
     Hitbox.TextTransparency = 1.000
 
-    UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(33, 31, 40))}
-    UIGradient_2.Rotation = -113
-    UIGradient_2.Parent = Example
-
+    -- Title text on the button
     Title.Name = "Title"
-    Title.Parent = Example
-    Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Title.Parent = Button
+    Title.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
     Title.BackgroundTransparency = 1.000
     Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Title.BorderSizePixel = 0
@@ -735,31 +735,17 @@ function nurysium:create_button(name: string, section_name: string, callback)
     Title.TextWrapped = true
     Title.TextXAlignment = Enum.TextXAlignment.Left
 
-    Button.Name = "Button"
-    Button.Parent = Example
-    Button.BackgroundColor3 = Color3.fromRGB(27, 24, 35)
-    Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Button.BorderSizePixel = 0
-    Button.Position = UDim2.new(0.841389358, 0, 0.279069781, 0)
-    Button.Size = UDim2.new(0, 38, 0, 18)
-    Button.ZIndex = 15
-
-    -- Button visibility based on section
+    -- Button visibility based on section name
     game:GetService("RunService").Heartbeat:Connect(function()
         if not section_name:match(ui_data.current_section) and not table.find(search_table, name) then
-            Example.Visible = false
+            Button.Visible = false
         else
-            Example.Visible = true
+            Button.Visible = true
         end
     end)
 
     -- Trigger callback when the button is clicked
-    Hitbox.MouseButton1Up:Connect(function()
-        callback()
-    end)
-
-    -- Same for touch tap (for mobile devices)
-    Hitbox.TouchTap:Connect(function()
+    Hitbox.MouseButton1Click:Connect(function()
         callback()
     end)
 end
