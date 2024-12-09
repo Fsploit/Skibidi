@@ -966,7 +966,7 @@ function nurysium:create_slider(name, section_name, min, max, callback)
     Title.Font = Enum.Font.GothamBold
     Title.Text = name
     Title.TextColor3 = Color3.fromRGB(231, 231, 243)
-    Title.TextSize = 14.000 -- Fixed text size
+    Title.TextSize = 20.000 -- Fixed text size
     Title.TextWrapped = true
     Title.TextXAlignment = Enum.TextXAlignment.Left
 
