@@ -590,7 +590,7 @@ function nurysium:create_divider(divider_text, section_name)
     DividerLabel.Name = "DividerLabel"
     DividerLabel.Parent = Divider
     DividerLabel.BackgroundTransparency = 1.000
-    DividerLabel.Position = UDim2.new(0.5, 0, 0.5, 0)  -- Centered text
+    DividerLabel.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)  -- Centered text
     DividerLabel.Size = UDim2.new(0, 380, 0, 20)  -- Adjust size of the label as needed
     DividerLabel.ZIndex = 11
     DividerLabel.Font = Enum.Font.Gotham
@@ -598,7 +598,7 @@ function nurysium:create_divider(divider_text, section_name)
     DividerLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
     DividerLabel.TextScaled = true
     DividerLabel.TextWrapped = true
-    DividerLabel.TextXAlignment = Enum.TextXAlignment.Center
+    DividerLabel.TextXAlignment = Enum.TextXAlignment.Left
 
     -- Make the divider visible based on the section
     game:GetService("RunService").Heartbeat:Connect(function()
