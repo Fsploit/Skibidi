@@ -499,6 +499,81 @@ function nurysium:create_section(name: string, imageID: number)
     tween_service:Create(ImageLabel, TweenInfo.new(3, Enum.EasingStyle.Exponential), {ImageTransparency = 0.45}):Play()
 end
 
+
+function nurysium:create_paragraph(title, content, section_name)
+    task.wait(0.15)
+
+    local Paragraph = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStroke = Instance.new("UIStroke")
+    local UIGradient = Instance.new("UIGradient")
+    local TitleLabel = Instance.new("TextLabel")
+    local ContentLabel = Instance.new("TextLabel")
+
+    Paragraph.Name = title
+    Paragraph.Parent = ui.Background["functions_frame"]
+    Paragraph.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    Paragraph.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Paragraph.BorderSizePixel = 0
+    Paragraph.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)
+    Paragraph.Size = UDim2.new(0, 380, 0, 80)
+    Paragraph.ZIndex = 10
+
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = Paragraph
+
+    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Thickness = 4
+    UIStroke.Parent = Paragraph
+
+    UIGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(38, 35, 44)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(46, 43, 56))
+    }
+    UIGradient.Rotation = 36
+    UIGradient.Parent = UIStroke
+
+    -- Title Label
+    TitleLabel.Name = "Title"
+    TitleLabel.Parent = Paragraph
+    TitleLabel.BackgroundTransparency = 1.000
+    TitleLabel.Position = UDim2.new(0.0449240729, 0, 0.1, 0)
+    TitleLabel.Size = UDim2.new(0, 340, 0, 20)
+    TitleLabel.ZIndex = 11
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
+    TitleLabel.TextScaled = true
+    TitleLabel.TextWrapped = true
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Content Label
+    ContentLabel.Name = "Content"
+    ContentLabel.Parent = Paragraph
+    ContentLabel.BackgroundTransparency = 1.000
+    ContentLabel.Position = UDim2.new(0.0449240729, 0, 0.4, 0)
+    ContentLabel.Size = UDim2.new(0, 340, 0, 35)
+    ContentLabel.ZIndex = 11
+    ContentLabel.Font = Enum.Font.Gotham
+    ContentLabel.Text = content
+    ContentLabel.TextColor3 = Color3.fromRGB(200, 200, 220)
+    ContentLabel.TextScaled = true
+    ContentLabel.TextWrapped = true
+    ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
+
+    -- Visibility based on section name and search_table
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if not section_name:match(ui_data.current_section) and not table.find(search_table, title) then
+            Paragraph.Visible = false
+        else
+            Paragraph.Visible = true
+        end
+    end)
+end
+
+
 function nurysium:create_toggle(name: string, section_name: string, callback)
     task.wait(0.15)
 
