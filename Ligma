@@ -1207,4 +1207,97 @@ function nurysium:create_dropdown(name, section_name, options, callback)
     end)
 end
 
+function nurysium:create_keybind(name, section_name, default_key, callback)
+    task.wait(0.15)
+
+    callback = callback or function() end
+    default_key = default_key or Enum.KeyCode.F -- Default key is "F"
+
+    -- Main Frame
+    local Example = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIStroke = Instance.new("UIStroke")
+    local Title = Instance.new("TextLabel")
+    local KeyLabel = Instance.new("TextLabel")
+
+    Example.Name = name
+    Example.Parent = ui.Background["functions_frame"]
+    Example.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
+    Example.BorderSizePixel = 0
+    Example.Position = UDim2.new(0.042, 0, 0.015, 0)
+    Example.Size = UDim2.new(0, 380, 0, 43)
+    Example.ZIndex = 10
+
+    UICorner.CornerRadius = UDim.new(0, 10)
+    UICorner.Parent = Example
+
+    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    UIStroke.Color = Color3.fromRGB(39, 36, 47)
+    UIStroke.Thickness = 4
+    UIStroke.Parent = Example
+
+    -- Title
+    Title.Name = "Title"
+    Title.Parent = Example
+    Title.BackgroundTransparency = 1.000
+    Title.Position = UDim2.new(0.044, 0, 0.1, 0)
+    Title.Size = UDim2.new(0.7, 0, 0.8, 0)
+    Title.ZIndex = 10
+    Title.Font = Enum.Font.GothamBold
+    Title.Text = name
+    Title.TextColor3 = Color3.fromRGB(231, 231, 243)
+    Title.TextSize = 14.000
+    Title.TextWrapped = true
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Key Label
+    KeyLabel.Name = "KeyLabel"
+    KeyLabel.Parent = Example
+    KeyLabel.BackgroundTransparency = 1.000
+    KeyLabel.Position = UDim2.new(0.8, 0, 0.1, 0)
+    KeyLabel.Size = UDim2.new(0.15, 0, 0.8, 0)
+    KeyLabel.ZIndex = 10
+    KeyLabel.Font = Enum.Font.GothamBold
+    KeyLabel.Text = tostring(default_key):gsub("Enum.KeyCode.", "") -- Display the key name
+    KeyLabel.TextColor3 = Color3.fromRGB(231, 231, 243)
+    KeyLabel.TextSize = 14.000
+    KeyLabel.TextWrapped = true
+    KeyLabel.TextXAlignment = Enum.TextXAlignment.Center
+
+    -- Input Handling
+    local userInputService = game:GetService("UserInputService")
+
+    local function onKeyPressed(input)
+        if input.KeyCode == default_key then
+            callback()
+        end
+    end
+
+    -- Event for Key Press
+    userInputService.InputBegan:Connect(onKeyPressed)
+
+    -- Visibility based on section
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if ui_data.current_section == section_name then
+            Example.Visible = true
+        else
+            Example.Visible = false
+        end
+    end)
+
+    -- Allow Rebinding
+    KeyLabel.MouseButton1Click:Connect(function()
+        KeyLabel.Text = "..."
+        local connection
+        connection = userInputService.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.Keyboard then
+                default_key = input.KeyCode
+                KeyLabel.Text = tostring(default_key):gsub("Enum.KeyCode.", "")
+                connection:Disconnect()
+            end
+        end)
+    end)
+end
+
+
 return nurysium 
