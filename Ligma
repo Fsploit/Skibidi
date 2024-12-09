@@ -1246,7 +1246,7 @@ function nurysium:create_keybind(name, section_name, default_key, callback)
     Title.Font = Enum.Font.GothamBold
     Title.Text = name
     Title.TextColor3 = Color3.fromRGB(231, 231, 243)
-    Title.TextSize = 14.000
+    Title.TextSize = 20.000
     Title.TextWrapped = true
     Title.TextXAlignment = Enum.TextXAlignment.Left
 
