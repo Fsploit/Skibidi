@@ -499,7 +499,7 @@ function nurysium:create_section(name: string, imageID: number)
     tween_service:Create(ImageLabel, TweenInfo.new(3, Enum.EasingStyle.Exponential), {ImageTransparency = 0.45}):Play()
 end
 
-function nurysium:create_game_image(image_url, section_name)
+function nurysium:create_game_image(asset_id, section_name)
     task.wait(0.15)
 
     local GameImage = Instance.new("Frame")
@@ -542,7 +542,7 @@ function nurysium:create_game_image(image_url, section_name)
     ImageLabel.BackgroundTransparency = 1.000
     ImageLabel.Size = UDim2.new(1, 0, 1, 0)  -- Fill the whole frame with the image
     ImageLabel.ZIndex = 11
-    ImageLabel.Image = image_url  -- Set the image to the provided URL
+    ImageLabel.Image = "rbxassetid://" .. tostring(asset_id)  -- Use the rbxassetid
     ImageLabel.ScaleType = Enum.ScaleType.Fit  -- Fit the image into the frame
     ImageLabel.ClipsDescendants = true  -- Clip any parts of the image that overflow
 
@@ -555,8 +555,6 @@ function nurysium:create_game_image(image_url, section_name)
         end
     end)
 end
-
-
 
 
 function nurysium:create_paragraph(title, content, section_name)
