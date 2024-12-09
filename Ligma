@@ -750,7 +750,7 @@ function nurysium:create_button(name, section_name, callback)
     end)
 end
 
-function create_dropdown(name, section_name, contentList, callback)
+function nurysium:create_dropdown(name, section_name, contentList, callback)
     task.wait(0.15)
 
     callback = callback or function() end
