@@ -544,7 +544,7 @@ function nurysium:create_toggle(name: string, section_name: string, callback)
 
     Hitbox.Name = "Hitbox"
     Hitbox.Parent = Example
-    Hitbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Hitbox.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
     Hitbox.BackgroundTransparency = 1.000
     Hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Hitbox.BorderSizePixel = 0
@@ -560,7 +560,7 @@ function nurysium:create_toggle(name: string, section_name: string, callback)
 
     Title.Name = "Title"
     Title.Parent = Example
-    Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Title.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
     Title.BackgroundTransparency = 1.000
     Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Title.BorderSizePixel = 0
@@ -679,7 +679,7 @@ function nurysium:create_button(name, section_name, callback)
     -- Setup button properties
     Button.Name = name
     Button.Parent = ui.Background["functions_frame"]
-    Button.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Button.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
     Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Button.BorderSizePixel = 0
     Button.Position = UDim2.new(0.0428211577, 0, 0.0157480314, 0)
@@ -707,7 +707,7 @@ function nurysium:create_button(name, section_name, callback)
     -- Hitbox is the clickable area for the button
     Hitbox.Name = "Hitbox"
     Hitbox.Parent = Button
-    Hitbox.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Hitbox.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
     Hitbox.BackgroundTransparency = 1.000
     Hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Hitbox.BorderSizePixel = 0
@@ -720,7 +720,7 @@ function nurysium:create_button(name, section_name, callback)
     -- Title text on the button
     Title.Name = "Title"
     Title.Parent = Button
-    Title.BackgroundColor3 = Color3.fromRGB(37, 35, 48)
+    Title.BackgroundColor3 = Color3.fromRGB(38, 35, 44)
     Title.BackgroundTransparency = 1.000
     Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Title.BorderSizePixel = 0
