@@ -247,7 +247,7 @@ function nurysium: init(name: string, is_draggable: boolean, parent)
     ImageLabel.Position = UDim2.new(0.0675648972, 0, 0.244624332, 0)
     ImageLabel.Size = UDim2.new(0, 17, 0, 17)
     ImageLabel.ZIndex = 12
-    ImageLabel.Image = "rbxassetid://17441620727"
+    ImageLabel.Image = "rbxassetid://17441779136"
     ImageLabel.ImageTransparency = 0.450
 
     Bar.Name = "Bar"
