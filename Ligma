@@ -114,7 +114,7 @@ function nurysium: init(name: string, is_draggable: boolean, parent)
 
     Sections.Name = "Sections"
     Sections.Parent = Background
-    Sections.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Sections.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     Sections.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Sections.BorderSizePixel = 0
     Sections.Position = UDim2.new(-0.00157281861, 0, 0, 0)
@@ -149,7 +149,7 @@ function nurysium: init(name: string, is_draggable: boolean, parent)
     UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     UIListLayout.Padding = UDim.new(0.0450000018, 0)
 
-    UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(39, 36, 47)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(33, 31, 40))}
+    UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 0, 0)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))}
     UIGradient_2.Rotation = -113
     UIGradient_2.Parent = Sections
 
